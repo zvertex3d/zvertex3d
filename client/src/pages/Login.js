@@ -1,20 +1,22 @@
+import { useState } from "react";
 import api from "../services/api";
 
 export default function Login() {
-  const login = async () => {
-    const res = await api.post("/auth/login", {
-      email: "admin@test.com",
-      password: "1234"
-    });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const submit = async () => {
+    const res = await api.post("/auth/login", { email, password });
     localStorage.setItem("token", res.data.token);
-    localStorage.setItem("role", res.data.role);
-    alert("Logged in");
+    alert("Login successful");
   };
 
   return (
-    <div style={{ padding: 40 }}>
+    <div style={{ padding: "2rem" }}>
       <h2>Login</h2>
-      <button onClick={login}>Login</button>
+      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+      <button onClick={submit}>Login</button>
     </div>
   );
 }
