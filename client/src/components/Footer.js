@@ -3,11 +3,10 @@ export default function Footer() {
     <footer style={{
       textAlign: "center",
       padding: "1rem",
-      backgroundColor: "#001f3f",
-      color: "#fff",
-      marginTop: "2rem"
+      background: "#001f3f",
+      color: "#fff"
     }}>
-      &copy; {new Date().getFullYear()} Zvertex3D. All Rights Reserved.
+      &copy; {new Date().getFullYear()} Zvertex3D — All Rights Reserved.
     </footer>
   );
 }
