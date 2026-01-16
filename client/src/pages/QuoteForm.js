@@ -48,10 +48,12 @@ export default function QuoteForm() {
         <option>Fast</option>
         <option>Express</option>
       </select>
-      <button style={{ background: "#001f3f", color: "#fff", padding: "0.6rem", border: "none", borderRadius: "4px" }} onClick={submit}>
+      <button
+        style={{ background: "#001f3f", color: "#fff", padding: "0.6rem", border: "none", borderRadius: "4px" }}
+        onClick={submit}
+      >
         Get Quote
       </button>
-
       {price && <h3>Estimated Price: ₹{price}</h3>}
     </div>
   );
