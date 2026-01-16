@@ -1,12 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client"; // fixed import
 import App from "./App";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./index.css";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const container = document.getElementById("root");
+const root = createRoot(container); // correct usage for React 18
 root.render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
+  <React.StrictMode>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  </React.StrictMode>
 );
