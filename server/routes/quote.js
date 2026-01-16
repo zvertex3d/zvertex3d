@@ -1,46 +1,20 @@
 const router = require("express").Router();
 const multer = require("multer");
 const Quote = require("../models/Quote");
-const auth = require("../middleware/auth");
 
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
-});
+const upload = multer({ dest: "uploads/" });
 
-const upload = multer({ storage });
+router.post("/", upload.single("file"), async (req, res) => {
+  let price = Math.floor(Math.random() * 300) + 400; // ₹400–₹700
 
-router.post("/", auth, upload.single("file"), async (req, res) => {
-  const { material, color, size, time } = req.body;
+  if (req.body.material === "Resin") price += 150;
+  if (req.body.size === "Medium") price += 200;
+  if (req.body.size === "Large") price += 400;
+  if (req.body.time === "Fast") price += 150;
+  if (req.body.time === "Express") price += 300;
 
-  // Pricing logic
-  let price = 100;
-  if (material === "PLA") price += 50;
-  if (material === "Resin") price += 100;
-
-  if (color === "Red") price += 20;
-  if (color === "Blue") price += 20;
-  if (color === "Green") price += 20;
-
-  if (size === "Medium") price *= 1.5;
-  if (size === "Large") price *= 2;
-
-  if (time === "Fast") price *= 1.5;
-  if (time === "Express") price *= 2;
-
-  const quote = new Quote({
-    userId: req.user.id,
-    file: req.file.filename,
-    material,
-    color,
-    size,
-    time,
-    price
-  });
-
-  await quote.save();
-
-  res.json({ file: req.file.filename, price, status: "Quote Generated" });
+  await new Quote({ ...req.body, price }).save();
+  res.json({ price });
 });
 
 module.exports = router;

@@ -5,8 +5,10 @@ import Home from "./pages/Home";
 import InstantQuote from "./pages/InstantQuote";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import CustomerDashboard from "./pages/CustomerDashboard";
+import VendorDashboard from "./pages/VendorDashboard";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Navbar />
@@ -15,10 +17,10 @@ function App() {
         <Route path="/instant-quote" element={<InstantQuote />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+        <Route path="/vendor-dashboard" element={<VendorDashboard />} />
       </Routes>
       <Footer />
     </BrowserRouter>
   );
 }
-
-export default App;

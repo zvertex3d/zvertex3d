@@ -12,12 +12,13 @@ app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.error(err));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/quote", quoteRoutes);
-app.use("/api/order", orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.listen(5000, () => console.log("Server running on port 5000"));
