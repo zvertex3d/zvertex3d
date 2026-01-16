@@ -4,40 +4,50 @@ import api from "../services/api";
 export default function InstantQuote() {
   const [file, setFile] = useState(null);
   const [material, setMaterial] = useState("PLA");
-  const [color, setColor] = useState("Red");
   const [size, setSize] = useState("Small");
-  const [time, setTime] = useState("Normal");
+  const [speed, setSpeed] = useState("Normal");
   const [price, setPrice] = useState(null);
 
   const submit = async () => {
-    if (!file) return alert("Upload file");
+    if (!file) return alert("Upload STL/OBJ file");
 
     const form = new FormData();
     form.append("file", file);
     form.append("material", material);
-    form.append("color", color);
     form.append("size", size);
-    form.append("time", time);
+    form.append("time", speed);
 
     const res = await api.post("/quote", form);
     setPrice(res.data.price);
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "500px", margin: "auto", color: "#001f3f" }}>
-      <h2>Instant Quote</h2>
+    <div style={{ maxWidth: "400px", margin: "auto" }}>
+      <h2>3D Instant Quote</h2>
 
-      <input type="file" onChange={e => setFile(e.target.files[0])} />
-      <select onChange={e => setMaterial(e.target.value)}><option>PLA</option><option>Resin</option></select>
-      <select onChange={e => setColor(e.target.value)}><option>Red</option><option>Blue</option><option>Green</option></select>
-      <select onChange={e => setSize(e.target.value)}><option>Small</option><option>Medium</option><option>Large</option></select>
-      <select onChange={e => setTime(e.target.value)}><option>Normal</option><option>Fast</option><option>Express</option></select>
+      <input type="file" accept=".stl,.obj" onChange={e => setFile(e.target.files[0])} />
 
-      <button onClick={submit} style={{ background: "#001f3f", color: "#fff", padding: "0.6rem", marginTop: "1rem" }}>
-        Get Quote
-      </button>
+      <select onChange={e => setMaterial(e.target.value)}>
+        <option>PLA</option>
+        <option>Resin</option>
+        <option>ABS</option>
+      </select>
 
-      {price && <h3>Estimated Price: ₹{price}</h3>}
+      <select onChange={e => setSize(e.target.value)}>
+        <option>Small</option>
+        <option>Medium</option>
+        <option>Large</option>
+      </select>
+
+      <select onChange={e => setSpeed(e.target.value)}>
+        <option>Normal</option>
+        <option>Fast</option>
+        <option>Express</option>
+      </select>
+
+      <button onClick={submit}>Calculate Price</button>
+
+      {price && <h3>₹ {price}</h3>}
     </div>
   );
 }
