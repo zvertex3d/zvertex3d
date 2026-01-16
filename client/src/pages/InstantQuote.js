@@ -5,20 +5,22 @@ export default function InstantQuote() {
   const [price, setPrice] = useState(null);
   const [error, setError] = useState("");
 
-  const submit = async () => {
+  const handleSubmit = async () => {
     try {
       setError("");
-      const res = await api.post("/quote", new FormData());
+      const formData = new FormData();
+      const res = await api.post("/quote", formData);
       setPrice(res.data.price);
     } catch {
-      setError("Unable to connect to server.");
+      setError("Server unavailable. Try again later.");
     }
   };
 
   return (
-    <div style={{ padding: "2rem", color: "#001f3f" }}>
+    <div style={{ padding: "30px" }}>
       <h2>Instant Quote</h2>
-      <button onClick={submit}>Get Quote</button>
+      <button onClick={handleSubmit}>Get Quote</button>
+
       {price !== null && <h3>₹{price}</h3>}
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
