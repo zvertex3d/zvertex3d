@@ -10,6 +10,7 @@ export default function InstantQuote() {
   const [price, setPrice] = useState(null);
 
   const submit = async () => {
+    if (!file) return alert("Please upload a file");
     const form = new FormData();
     form.append("file", file);
     form.append("material", material);
@@ -22,30 +23,40 @@ export default function InstantQuote() {
   };
 
   return (
-    <div style={{ background: "#fff", color: "#001f3f", padding: "2rem", minHeight: "100vh" }}>
+    <div style={{ padding: "2rem", minHeight: "80vh", backgroundColor: "#fff", color: "#001f3f" }}>
       <h2>3D Instant Quote</h2>
-      <input type="file" onChange={e => setFile(e.target.files[0])} />
-      <select onChange={e => setMaterial(e.target.value)}>
-        <option>PLA</option>
-        <option>Resin</option>
-      </select>
-      <select onChange={e => setColor(e.target.value)}>
-        <option>Red</option>
-        <option>Blue</option>
-        <option>Green</option>
-      </select>
-      <select onChange={e => setSize(e.target.value)}>
-        <option>Small</option>
-        <option>Medium</option>
-        <option>Large</option>
-      </select>
-      <select onChange={e => setTime(e.target.value)}>
-        <option>Normal</option>
-        <option>Fast</option>
-        <option>Express</option>
-      </select>
-      <button onClick={submit} style={{ background: "#001f3f", color: "#fff", padding: "0.5rem 1rem", marginTop: "1rem" }}>Get Quote</button>
-      {price && <h3>Price: ₹{price}</h3>}
+      <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.8rem", maxWidth: "400px" }}>
+        <input type="file" onChange={e => setFile(e.target.files[0])} />
+        <select onChange={e => setMaterial(e.target.value)} value={material}>
+          <option>PLA</option>
+          <option>Resin</option>
+        </select>
+        <select onChange={e => setColor(e.target.value)} value={color}>
+          <option>Red</option>
+          <option>Blue</option>
+          <option>Green</option>
+        </select>
+        <select onChange={e => setSize(e.target.value)} value={size}>
+          <option>Small</option>
+          <option>Medium</option>
+          <option>Large</option>
+        </select>
+        <select onChange={e => setTime(e.target.value)} value={time}>
+          <option>Normal</option>
+          <option>Fast</option>
+          <option>Express</option>
+        </select>
+        <button onClick={submit} style={{
+          padding: "0.6rem 1.2rem",
+          backgroundColor: "#001f3f",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontWeight: "bold"
+        }}>Get Quote</button>
+      </div>
+      {price && <h3 style={{ marginTop: "1rem" }}>Estimated Price: ₹{price}</h3>}
     </div>
   );
 }

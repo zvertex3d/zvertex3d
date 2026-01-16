@@ -10,21 +10,34 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const submit = async () => {
-    await api.post("/auth/signup", { name, email, password, role });
-    navigate("/login");
+    try {
+      await api.post("/auth/signup", { name, email, password, role });
+      alert(`${role} registered successfully!`);
+      navigate("/login");
+    } catch (err) {
+      alert(err.response.data.error || "Error registering");
+    }
   };
 
   return (
-    <div style={{ padding: "2rem", background: "#fff", color: "#001f3f" }}>
+    <div style={{ padding: "2rem", minHeight: "80vh", backgroundColor: "#fff", color: "#001f3f" }}>
       <h2>Signup</h2>
       <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
       <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-      <select onChange={e => setRole(e.target.value)}>
+      <select value={role} onChange={e => setRole(e.target.value)}>
         <option value="customer">Customer</option>
         <option value="vendor">Vendor</option>
       </select>
-      <button onClick={submit} style={{ background: "#001f3f", color: "#fff" }}>Signup</button>
+      <button onClick={submit} style={{
+        backgroundColor: "#001f3f",
+        color: "#fff",
+        padding: "0.6rem 1.2rem",
+        marginTop: "1rem",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer"
+      }}>Signup</button>
     </div>
   );
 }
