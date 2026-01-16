@@ -1,5 +1,5 @@
 import React from "react";
-import { createRoot } from "react-dom/client"; // must use createRoot in React 18
+import { createRoot } from "react-dom/client"; // React 18 root
 import App from "./App";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./index.css";
@@ -7,7 +7,7 @@ import "./index.css";
 const container = document.getElementById("root");
 
 if (container) {
-  const root = createRoot(container); // correct React 18 root creation
+  const root = createRoot(container);
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
