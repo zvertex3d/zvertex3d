@@ -1,4 +1,3 @@
-// QuoteForm.js
 import { useState } from "react";
 import api from "../services/api";
 
@@ -19,8 +18,12 @@ export default function QuoteForm() {
     form.append("size", size);
     form.append("time", time);
 
-    const res = await api.post("/quote", form);
-    setPrice(res.data.price);
+    try {
+      const res = await api.post("/quote", form);
+      setPrice(res.data.price);
+    } catch (err) {
+      alert("Error generating quote");
+    }
   };
 
   return (
@@ -45,7 +48,7 @@ export default function QuoteForm() {
         <option>Fast</option>
         <option>Express</option>
       </select>
-      <button style={{ background: "#001f3f", color: "#fff", padding: "0.6rem", border: "none" }} onClick={submit}>
+      <button style={{ background: "#001f3f", color: "#fff", padding: "0.6rem", border: "none", borderRadius: "4px" }} onClick={submit}>
         Get Quote
       </button>
 
