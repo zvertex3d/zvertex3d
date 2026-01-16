@@ -1,26 +1,17 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import InstantQuote from "./pages/InstantQuote";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import CustomerDashboard from "./pages/CustomerDashboard";
-import VendorDashboard from "./pages/VendorDashboard";
+import axios from "axios";
 
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/instant-quote" element={<InstantQuote />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
-        <Route path="/vendor-dashboard" element={<VendorDashboard />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
-  );
-}
+const api = axios.create({
+  baseURL:
+    process.env.REACT_APP_API_URL || "http://localhost:5000/api"
+});
+
+api.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem("token");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  error => Promise.reject(error)
+);
+
+export default api;
