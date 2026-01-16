@@ -1,17 +1,20 @@
-import axios from "axios";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import InstantQuote from "./pages/InstantQuote";
+import AdminDashboard from "./pages/AdminDashboard";
 
-const api = axios.create({
-  baseURL:
-    process.env.REACT_APP_API_URL || "http://localhost:5000/api"
-});
-
-api.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem("token");
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
-  },
-  error => Promise.reject(error)
-);
-
-export default api;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/quote" element={<InstantQuote />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}

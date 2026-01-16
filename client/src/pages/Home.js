@@ -1,13 +1,8 @@
-import Hero from "../components/Hero";
-import Services from "../components/Services";
-import Testimonials from "../components/Testimonials";
-
 export default function Home() {
   return (
-    <>
-      <Hero />
-      <Services />
-      <Testimonials />
-    </>
+    <div style={{ padding: 40 }}>
+      <h1>ZVertex3D</h1>
+      <p>Professional 3D Printing Services</p>
+    </div>
   );
 }

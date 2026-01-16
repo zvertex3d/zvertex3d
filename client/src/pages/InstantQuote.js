@@ -2,27 +2,22 @@ import { useState } from "react";
 import api from "../services/api";
 
 export default function InstantQuote() {
+  const [file, setFile] = useState(null);
   const [price, setPrice] = useState(null);
-  const [error, setError] = useState("");
 
-  const handleSubmit = async () => {
-    try {
-      setError("");
-      const formData = new FormData();
-      const res = await api.post("/quote", formData);
-      setPrice(res.data.price);
-    } catch {
-      setError("Server unavailable. Try again later.");
-    }
+  const submit = async () => {
+    const form = new FormData();
+    form.append("file", file);
+    const res = await api.post("/quote", form);
+    setPrice(res.data.price);
   };
 
   return (
-    <div style={{ padding: "30px" }}>
+    <div style={{ padding: 40 }}>
       <h2>Instant Quote</h2>
-      <button onClick={handleSubmit}>Get Quote</button>
-
-      {price !== null && <h3>₹{price}</h3>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <input type="file" onChange={e => setFile(e.target.files[0])} />
+      <button onClick={submit}>Get Quote</button>
+      {price && <p>Estimated Price: ₹{price}</p>}
     </div>
   );
 }

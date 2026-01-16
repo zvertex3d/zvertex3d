@@ -1,40 +1,19 @@
-import { useState } from "react";
 import api from "../services/api";
 
 export default function Signup() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer");
-
-  const submit = async () => {
+  const signup = async () => {
     await api.post("/auth/signup", {
-      name,
-      email,
-      phone,
-      password,
-      role
+      email: "admin@test.com",
+      password: "1234",
+      role: "admin"
     });
-    alert("Registered successfully");
+    alert("Account created");
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div style={{ padding: 40 }}>
       <h2>Signup</h2>
-      <input placeholder="Name" onChange={e => setName(e.target.value)} />
-      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input placeholder="Phone" onChange={e => setPhone(e.target.value)} />
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={e => setPassword(e.target.value)}
-      />
-      <select onChange={e => setRole(e.target.value)}>
-        <option value="customer">Customer</option>
-        <option value="vendor">Vendor</option>
-      </select>
-      <button onClick={submit}>Signup</button>
+      <button onClick={signup}>Signup</button>
     </div>
   );
 }
