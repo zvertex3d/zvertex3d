@@ -6,6 +6,8 @@ export default function Cart({ item }) {
     alert("Order placed");
   };
 
+  if (!item) return <h3>No items in cart</h3>;
+
   return (
     <div style={{ padding: "2rem" }}>
       <h2>Cart</h2>

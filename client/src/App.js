@@ -5,6 +5,9 @@ import Home from "./pages/Home";
 import InstantQuote from "./pages/InstantQuote";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import CustomerDashboard from "./pages/CustomerDashboard";
+import VendorDashboard from "./pages/VendorDashboard";
+import Cart from "./pages/Cart";
 
 export default function App() {
   return (
@@ -15,6 +18,9 @@ export default function App() {
         <Route path="/instant-quote" element={<InstantQuote />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+        <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
     </BrowserRouter>
