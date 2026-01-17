@@ -1,94 +1,35 @@
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
     <>
-      <section style={hero}>
-        <h1 style={title}>Welcome to ZvertexAI</h1>
-        <p style={subtitle}>
-          Empowering careers with AI-driven job matching and automation.
-        </p>
+      <SEO
+        title="Zvertex3D – Professional 3D Printing Services"
+        description="Instant quotes, fast delivery, and vendor manufacturing network."
+      />
 
-        <div style={{ marginTop: "2rem" }}>
-          <Link to="/signup">
-            <button style={cta}>GET STARTED</button>
-          </Link>
-          <Link to="/login">
-            <button style={secondary}>LOGIN</button>
-          </Link>
-        </div>
-      </section>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        style={{ padding: "3rem", color: "#001f3f" }}
+      >
+        <h1>Professional 3D Printing Services</h1>
+        <p>Fast, reliable and precise manufacturing.</p>
 
-      <section style={features}>
-        <Feature
-          title="AI Job Matching"
-          desc="Find jobs tailored to your skills with our advanced AI algorithms."
-        />
-        <Feature
-          title="Auto-Apply"
-          desc="Let ZvertexAI apply to jobs on your behalf throughout the day."
-        />
-        <Feature
-          title="Subscription Plans"
-          desc="Choose from Student, Recruiter, or Business plans tailored to your needs."
-        />
-      </section>
+        <Link to="/instant-quote">
+          <button style={{
+            background: "#001f3f",
+            color: "#fff",
+            padding: "0.8rem 1.5rem",
+            border: "none"
+          }}>
+            Get Instant Quote
+          </button>
+        </Link>
+      </motion.div>
     </>
   );
 }
-
-function Feature({ title, desc }) {
-  return (
-    <div style={featureBox}>
-      <h3>{title}</h3>
-      <p style={{ color: "#cfd8e3" }}>{desc}</p>
-    </div>
-  );
-}
-
-/* STYLES */
-const hero = {
-  textAlign: "center",
-  padding: "5rem 2rem"
-};
-
-const title = {
-  fontSize: "3rem",
-  marginBottom: "1rem"
-};
-
-const subtitle = {
-  fontSize: "1.2rem",
-  color: "#cfd8e3"
-};
-
-const cta = {
-  background: "#ff7a18",
-  border: "none",
-  color: "#fff",
-  padding: "0.8rem 1.8rem",
-  borderRadius: "5px",
-  marginRight: "1rem",
-  cursor: "pointer"
-};
-
-const secondary = {
-  background: "transparent",
-  border: "1px solid #fff",
-  color: "#fff",
-  padding: "0.8rem 1.8rem",
-  borderRadius: "5px",
-  cursor: "pointer"
-};
-
-const features = {
-  display: "flex",
-  justifyContent: "center",
-  gap: "3rem",
-  padding: "3rem"
-};
-
-const featureBox = {
-  maxWidth: "250px",
-  textAlign: "left"
-};
