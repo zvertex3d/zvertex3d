@@ -1,38 +1,36 @@
-import { Link } from "react-router-dom";
-import SEO from "../components/SEO";
-import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
-    <>
-      <SEO
-        title="Zvertex3D – Professional 3D Printing Services"
-        description="Instant quotes, fast delivery, and precision 3D manufacturing."
-      />
-
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        style={{ padding: "3rem", color: "#001f3f" }}
-      >
-        <h1>Professional 3D Printing Services</h1>
-        <p>Fast, reliable and precise 3D manufacturing solutions.</p>
-
-        <Link to="/instant-quote">
-          <button style={{
-            marginTop: "1rem",
-            background: "#001f3f",
-            color: "#fff",
-            padding: "0.8rem 1.5rem",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer"
-          }}>
-            Get Instant Quote
+    <div>
+      <div style={{
+        backgroundImage: "url('/hero.jpg')",
+        height: "80vh",
+        backgroundSize: "cover",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#fff",
+        textAlign: "center"
+      }}>
+        <div>
+          <h1>Upload Your Design. We Print It.</h1>
+          <p>High precision 3D Printing solutions</p>
+          <button onClick={() => navigate("/upload")} style={btn}>
+            Upload Image
           </button>
-        </Link>
-      </motion.div>
-    </>
+        </div>
+      </div>
+    </div>
   );
 }
+
+const btn = {
+  background: "#001f3f",
+  color: "#fff",
+  padding: "1rem 2rem",
+  border: "none",
+  cursor: "pointer"
+};

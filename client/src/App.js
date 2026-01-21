@@ -2,12 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import InstantQuote from "./pages/InstantQuote";
+import Upload from "./pages/Upload";
+import Order from "./pages/Order";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import CustomerDashboard from "./pages/CustomerDashboard";
-import VendorDashboard from "./pages/VendorDashboard";
-import Cart from "./pages/Cart";
 
 export default function App() {
   return (
@@ -15,12 +13,10 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/instant-quote" element={<InstantQuote />} />
+        <Route path="/upload" element={<Upload />} />
+        <Route path="/order" element={<Order />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
-        <Route path="/vendor-dashboard" element={<VendorDashboard />} />
-        <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
     </BrowserRouter>
