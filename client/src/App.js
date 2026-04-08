@@ -23,7 +23,7 @@ export default function App() {
       >
         <Navbar />
 
-        <div style={{ flex: 1 }}>
+        <main style={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
@@ -34,7 +34,7 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/order" element={<Order />} />
           </Routes>
-        </div>
+        </main>
 
         <Footer />
       </div>

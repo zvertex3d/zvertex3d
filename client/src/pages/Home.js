@@ -1,83 +1,126 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-const slides = ["/hero.jpg", "/hero.jpg", "/hero.jpg"];
+const services = [
+  "3D Printing",
+  "3D Scanning",
+  "Reverse Engineering",
+  "Rapid Prototyping"
+];
 
 const reviews = [
-  { name: "Rahul", text: "Outstanding quality, fast delivery!", rating: 5 },
-  { name: "Sneha", text: "Professional and precise 3D prints.", rating: 5 },
-  { name: "Arjun", text: "Great experience with Zvertex3D!", rating: 4 }
+  { name: "Rahul", text: "Outstanding quality and fast delivery!", rating: 5 },
+  { name: "Sneha", text: "Professional team and excellent output.", rating: 5 },
+  { name: "Arjun", text: "Best 3D printing service in Hyderabad.", rating: 4 }
 ];
 
 export default function Home() {
   const navigate = useNavigate();
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 4000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <div>
       <section
         style={{
-          height: "90vh",
-          backgroundImage: `url(${slides[current]})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          minHeight: "85vh",
+          background:
+            "linear-gradient(135deg, #0D1B2A 0%, #1B263B 50%, #00BFFF 100%)",
           display: "flex",
+          justifyContent: "center",
           alignItems: "center",
-          justifyContent: "center"
+          padding: "2rem"
         }}
       >
         <div
           style={{
-            background: "rgba(0,0,0,0.55)",
-            color: "#fff",
-            padding: "3rem",
-            borderRadius: "12px",
             textAlign: "center",
-            maxWidth: "700px"
+            color: "white",
+            maxWidth: "850px"
           }}
         >
-          <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>
-            Transforming Ideas into Reality
+          <h1 style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>
+            Transforming Ideas Into Reality
           </h1>
-          <p style={{ fontSize: "1.2rem", marginBottom: "2rem" }}>
-            High precision 3D printing, scanning, reverse engineering and design
-            solutions for industrial, medical and educational needs.
-          </p>
 
-          <button
-            onClick={() => navigate("/services")}
+          <p
             style={{
-              background: "#00BFFF",
-              border: "none",
-              padding: "0.9rem 2rem",
-              borderRadius: "8px",
-              fontSize: "1rem",
-              fontWeight: "600",
-              cursor: "pointer"
+              fontSize: "1.2rem",
+              lineHeight: "1.8",
+              marginBottom: "2rem"
             }}
           >
-            Explore Services
-          </button>
+            Premium 3D printing, scanning, prototyping, manufacturing and
+            reverse engineering solutions.
+          </p>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexWrap: "wrap"
+            }}
+          >
+            <button
+              onClick={() => navigate("/services")}
+              style={primaryBtn}
+            >
+              Explore Services
+            </button>
+
+            <button
+              onClick={() => navigate("/upload")}
+              style={secondaryBtn}
+            >
+              Upload Design
+            </button>
+          </div>
         </div>
       </section>
 
       <section
         style={{
           padding: "4rem 2rem",
-          background: "#F5FAFF",
+          background: "#F8FBFF",
           textAlign: "center"
         }}
       >
-        <h2 style={{ marginBottom: "2rem", fontSize: "2rem" }}>
-          What Our Clients Say
+        <h2 style={{ fontSize: "2rem", marginBottom: "2rem" }}>
+          Our Core Services
+        </h2>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
+            gap: "2rem",
+            maxWidth: "1100px",
+            margin: "auto"
+          }}
+        >
+          {services.map((service, index) => (
+            <div
+              key={index}
+              style={{
+                background: "white",
+                padding: "2rem",
+                borderRadius: "12px",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.08)"
+              }}
+            >
+              <h3>{service}</h3>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section
+        style={{
+          padding: "4rem 2rem",
+          background: "#ffffff",
+          textAlign: "center"
+        }}
+      >
+        <h2 style={{ fontSize: "2rem", marginBottom: "2rem" }}>
+          Client Reviews
         </h2>
 
         <div
@@ -92,16 +135,16 @@ export default function Home() {
             <div
               key={index}
               style={{
-                background: "#fff",
-                padding: "2rem",
                 width: "280px",
+                background: "#F8FBFF",
+                padding: "2rem",
                 borderRadius: "12px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+                boxShadow: "0 4px 12px rgba(0,0,0,0.06)"
               }}
             >
               <p>{'⭐'.repeat(review.rating)}</p>
-              <p style={{ margin: "1rem 0" }}>"{review.text}"</p>
-              <strong>- {review.name}</strong>
+              <p style={{ margin: "1rem 0" }}>{review.text}</p>
+              <strong>{review.name}</strong>
             </div>
           ))}
         </div>
@@ -109,3 +152,23 @@ export default function Home() {
     </div>
   );
 }
+
+const primaryBtn = {
+  padding: "1rem 2rem",
+  border: "none",
+  borderRadius: "8px",
+  background: "white",
+  color: "#0D1B2A",
+  fontWeight: "700",
+  cursor: "pointer"
+};
+
+const secondaryBtn = {
+  padding: "1rem 2rem",
+  border: "2px solid white",
+  borderRadius: "8px",
+  background: "transparent",
+  color: "white",
+  fontWeight: "700",
+  cursor: "pointer"
+};
