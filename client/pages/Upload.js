@@ -1,48 +1,34 @@
 import React, { useState } from "react";
 
 export default function Upload() {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [products, setProducts] = useState(
+    JSON.parse(localStorage.getItem("products")) || []
+  );
   const [preview, setPreview] = useState("");
-  const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
+  const handleUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    setSelectedFile(file);
-    setPreview(URL.createObjectURL(file));
-    setMessage("");
-  };
-
-  const handleUpload = () => {
-    if (!selectedFile) {
-      setMessage("Please select an image first");
-      return;
-    }
 
     const reader = new FileReader();
 
     reader.onloadend = () => {
       const imageData = reader.result;
 
-      const existingProducts =
-        JSON.parse(localStorage.getItem("products")) || [];
+      const newProduct = {
+        id: Date.now(),
+        name: file.name,
+        image: imageData
+      };
 
-      const updatedProducts = [
-        ...existingProducts,
-        {
-          id: Date.now(),
-          name: selectedFile.name,
-          image: imageData
-        }
-      ];
+      const updatedProducts = [...products, newProduct];
 
+      setProducts(updatedProducts);
       localStorage.setItem("products", JSON.stringify(updatedProducts));
-      setMessage("Product uploaded successfully ✅");
-      setSelectedFile(null);
+      setPreview(imageData);
     };
 
-    reader.readAsDataURL(selectedFile);
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -50,12 +36,12 @@ export default function Upload() {
       <h1 style={title}>Upload Your Product</h1>
 
       <label style={uploadBox}>
-        📷 Choose from Camera / Gallery
+        📷 Choose Product from Camera / Gallery
         <input
           type="file"
           accept="image/*"
           capture="environment"
-          onChange={handleChange}
+          onChange={handleUpload}
           style={{ display: "none" }}
         />
       </label>
@@ -68,20 +54,27 @@ export default function Upload() {
         />
       )}
 
-      <button style={uploadBtn} onClick={handleUpload}>
-        Upload Product
-      </button>
-
-      {message && <p style={messageStyle}>{message}</p>}
+      <div style={grid}>
+        {products.map((product) => (
+          <div key={product.id} style={card}>
+            <img
+              src={product.image}
+              alt={product.name}
+              style={productImage}
+            />
+            <h3>{product.name}</h3>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 const container = {
-  minHeight: "80vh",
+  minHeight: "100vh",
   padding: "4rem 2rem",
-  textAlign: "center",
-  background: "#f8fbff"
+  background: "#f8fbff",
+  textAlign: "center"
 };
 
 const title = {
@@ -102,25 +95,29 @@ const uploadBox = {
 };
 
 const previewImage = {
-  display: "block",
-  width: "100%",
-  maxWidth: "400px",
+  width: "300px",
+  borderRadius: "12px",
   margin: "2rem auto",
-  borderRadius: "10px"
+  display: "block"
 };
 
-const uploadBtn = {
-  padding: "1rem 2rem",
-  border: "none",
+const grid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
+  gap: "2rem",
+  maxWidth: "1100px",
+  margin: "auto"
+};
+
+const card = {
+  background: "white",
+  padding: "1rem",
+  borderRadius: "12px",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+};
+
+const productImage = {
+  width: "100%",
   borderRadius: "10px",
-  background: "#0D1B2A",
-  color: "white",
-  fontWeight: "700",
-  cursor: "pointer"
-};
-
-const messageStyle = {
-  marginTop: "1.5rem",
-  fontWeight: "600",
-  color: "green"
+  marginBottom: "1rem"
 };
