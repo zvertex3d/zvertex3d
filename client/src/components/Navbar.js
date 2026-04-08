@@ -1,41 +1,61 @@
-import { Link } from "react-router-dom";
+import React from "react";
 
 export default function Navbar() {
+  const openUpload = () => {
+    const fileInput = document.getElementById("global-product-upload");
+    if (fileInput) fileInput.click();
+  };
+
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const previewUrl = URL.createObjectURL(file);
+    localStorage.setItem("latestProductImage", previewUrl);
+    alert("✅ Product selected from camera/gallery");
+  };
+
   return (
-    <div>
+    <>
       {/* TOP CONTACT BAR */}
       <div style={topBar}>
-        <span>📞 +91 8639684322</span>
-        <span>📧 zvertex3d@gmail.com</span>
+        <div>📞 +91 8639684322</div>
+        <div>📧 zvertex3d@gmail.com</div>
       </div>
 
       {/* MAIN NAVBAR */}
       <nav style={nav}>
-        <Link to="/" style={logo}>
-          Zvertex3D
-        </Link>
+        <div style={logo}>Zvertex3D</div>
 
         <div style={navLinks}>
-          <Link to="/" style={link}>Home</Link>
-          <Link to="/services" style={link}>Services</Link>
-          <Link to="/upload" style={link}>Upload</Link>
-          <Link to="/login" style={btnLink}>Login</Link>
-          <Link to="/signup" style={btnLink}>Signup</Link>
+          <button style={navBtn}>Login</button>
+          <button style={navBtn}>Signup</button>
+          <button style={uploadBtn} onClick={openUpload}>
+            📷 Upload Product
+          </button>
         </div>
+
+        <input
+          id="global-product-upload"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleUpload}
+          style={{ display: "none" }}
+        />
       </nav>
-    </div>
+    </>
   );
 }
 
 const topBar = {
   background: "#081420",
-  color: "#ffffff",
+  color: "#fff",
   display: "flex",
   justifyContent: "flex-end",
   gap: "2rem",
-  padding: "0.5rem 2rem",
-  fontSize: "0.9rem",
-  fontWeight: "500"
+  padding: "0.6rem 2rem",
+  fontSize: "0.9rem"
 };
 
 const nav = {
@@ -48,26 +68,27 @@ const nav = {
 
 const logo = {
   color: "#00BFFF",
-  textDecoration: "none",
-  fontWeight: "bold",
-  fontSize: "2rem"
+  fontSize: "2rem",
+  fontWeight: "bold"
 };
 
 const navLinks = {
   display: "flex",
-  gap: "1.2rem",
-  alignItems: "center"
+  gap: "1rem"
 };
 
-const link = {
-  color: "#ffffff",
-  textDecoration: "none",
-  fontWeight: "600"
+const navBtn = {
+  padding: "0.8rem 1.2rem",
+  border: "none",
+  borderRadius: "8px",
+  background: "#ffffff",
+  color: "#0D1B2A",
+  fontWeight: "700",
+  cursor: "pointer"
 };
 
-const btnLink = {
-  ...link,
+const uploadBtn = {
+  ...navBtn,
   background: "#00BFFF",
-  padding: "0.6rem 1rem",
-  borderRadius: "8px"
+  color: "#fff"
 };
