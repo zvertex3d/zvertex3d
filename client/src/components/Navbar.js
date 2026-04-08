@@ -1,40 +1,63 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav
-      style={{
-        background: "#0D1B2A",
-        padding: "1rem 2rem",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}
-    >
-      <Link
-        to="/"
-        style={{
-          color: "#00BFFF",
-          textDecoration: "none",
-          fontSize: "1.5rem",
-          fontWeight: "bold"
-        }}
-      >
-        Zvertex3D
-      </Link>
-
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <Link to="/" style={linkStyle}>Home</Link>
-        <Link to="/services" style={linkStyle}>Services</Link>
-        <Link to="/upload" style={linkStyle}>Upload</Link>
+    <div>
+      {/* TOP CONTACT BAR */}
+      <div style={topBar}>
+        <span>📞 +91 8639684322</span>
+        <span>📧 zvertex3d@gmail.com</span>
       </div>
-    </nav>
+
+      {/* MAIN NAVBAR */}
+      <nav style={nav}>
+        <Link to="/" style={logo}>
+          Zvertex3D
+        </Link>
+
+        <div style={navLinks}>
+          <Link to="/" style={link}>Home</Link>
+          <Link to="/services" style={link}>Services</Link>
+          <Link to="/upload" style={link}>Upload</Link>
+        </div>
+      </nav>
+    </div>
   );
 }
 
-const linkStyle = {
-  color: "white",
+const topBar = {
+  background: "#081420",
+  color: "#ffffff",
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: "2rem",
+  padding: "0.5rem 2rem",
+  fontSize: "0.9rem",
+  fontWeight: "500"
+};
+
+const nav = {
+  background: "#0D1B2A",
+  padding: "1rem 2rem",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center"
+};
+
+const logo = {
+  color: "#00BFFF",
+  textDecoration: "none",
+  fontWeight: "bold",
+  fontSize: "2rem"
+};
+
+const navLinks = {
+  display: "flex",
+  gap: "1.5rem"
+};
+
+const link = {
+  color: "#ffffff",
   textDecoration: "none",
   fontWeight: "600"
 };
