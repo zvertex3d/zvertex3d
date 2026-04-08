@@ -19,6 +19,8 @@ export default function Navbar() {
           <Link to="/" style={link}>Home</Link>
           <Link to="/services" style={link}>Services</Link>
           <Link to="/upload" style={link}>Upload</Link>
+          <Link to="/login" style={btnLink}>Login</Link>
+          <Link to="/signup" style={btnLink}>Signup</Link>
         </div>
       </nav>
     </div>
@@ -53,11 +55,19 @@ const logo = {
 
 const navLinks = {
   display: "flex",
-  gap: "1.5rem"
+  gap: "1.2rem",
+  alignItems: "center"
 };
 
 const link = {
   color: "#ffffff",
   textDecoration: "none",
   fontWeight: "600"
+};
+
+const btnLink = {
+  ...link,
+  background: "#00BFFF",
+  padding: "0.6rem 1rem",
+  borderRadius: "8px"
 };
