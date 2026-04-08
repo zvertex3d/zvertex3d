@@ -1,107 +1,93 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 export default function Upload() {
+  const fileInputRef = useRef(null);
   const [preview, setPreview] = useState("");
-  const [message, setMessage] = useState("");
+  const [fileName, setFileName] = useState("");
 
-  const handleUpload = (e) => {
+  const openPicker = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      const imageData = reader.result;
-
-      const existingProducts =
-        JSON.parse(localStorage.getItem("products")) || [];
-
-      const newProduct = {
-        id: Date.now(),
-        name: file.name,
-        image: imageData
-      };
-
-      localStorage.setItem(
-        "products",
-        JSON.stringify([...existingProducts, newProduct])
-      );
-
-      setPreview(imageData);
-      setMessage("✅ Product uploaded successfully");
-    };
-
-    reader.readAsDataURL(file);
+    setFileName(file.name);
+    setPreview(URL.createObjectURL(file));
   };
 
   return (
-    <div style={container}>
-      <div style={card}>
-        <h1 style={title}>Upload Your Product</h1>
+    <div
+      style={{
+        minHeight: "80vh",
+        padding: "4rem 2rem",
+        background: "#f8fbff",
+        textAlign: "center"
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "3rem",
+          color: "#0D1B2A",
+          marginBottom: "1rem"
+        }}
+      >
+        Upload Your Product
+      </h1>
 
-        <label style={uploadButton}>
-          📷 Open Camera / Gallery
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handleUpload}
-            style={{ display: "none" }}
-          />
-        </label>
+      <p
+        style={{
+          marginBottom: "2rem",
+          color: "#555"
+        }}
+      >
+        Upload from camera or gallery
+      </p>
 
-        {preview && <img src={preview} alt="preview" style={previewImage} />}
+      <button onClick={openPicker} style={uploadBtn}>
+        📷 Choose Product Image
+      </button>
 
-        {message && <p style={messageStyle}>{message}</p>}
-      </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
+
+      {fileName && (
+        <p style={{ marginTop: "1rem" }}>
+          Selected: <b>{fileName}</b>
+        </p>
+      )}
+
+      {preview && (
+        <img
+          src={preview}
+          alt="preview"
+          style={{
+            width: "100%",
+            maxWidth: "400px",
+            marginTop: "2rem",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+          }}
+        />
+      )}
     </div>
   );
 }
 
-const container = {
-  minHeight: "90vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  background: "#f5f8fc",
-  padding: "2rem"
-};
-
-const card = {
-  width: "100%",
-  maxWidth: "600px",
-  background: "white",
-  padding: "3rem",
-  borderRadius: "16px",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-  textAlign: "center"
-};
-
-const title = {
-  fontSize: "2.5rem",
-  color: "#0D1B2A",
-  marginBottom: "2rem"
-};
-
-const uploadButton = {
-  display: "inline-block",
+const uploadBtn = {
   padding: "1rem 2rem",
+  border: "none",
+  borderRadius: "10px",
   background: "#00BFFF",
   color: "white",
-  borderRadius: "10px",
+  fontWeight: "700",
   cursor: "pointer",
-  fontWeight: "700"
-};
-
-const previewImage = {
-  width: "100%",
-  maxWidth: "350px",
-  marginTop: "2rem",
-  borderRadius: "12px"
-};
-
-const messageStyle = {
-  marginTop: "1.5rem",
-  color: "green",
-  fontWeight: "600"
+  fontSize: "1rem"
 };
