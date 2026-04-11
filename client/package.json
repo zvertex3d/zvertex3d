@@ -1,35 +1,7 @@
-{
-  "name": "zvertex3d-client",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^1.6.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.0",
-    "react-scripts": "5.0.1"
-  },
-  "scripts": {
-    "prebuild": "chmod +x node_modules/.bin/react-scripts || true",
-    "start": "react-scripts start",
-    "build": "CI= react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "engines": {
-    "node": "18.x",
-    "npm": "9.x"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+"dependencies": {
+  "@mui/material": "^5.15.0",
+  "@emotion/react": "^11.11.0",
+  "@emotion/styled": "^11.11.0",
+  "axios": "^1.6.0",
+  "react-router-dom": "^6.22.0"
 }
