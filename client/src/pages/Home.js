@@ -1,113 +1,83 @@
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const products = [
-  {
-    name: "3D Printed Prototype",
-    image: "https://via.placeholder.com/300x220?text=3D+Prototype"
-  },
-  {
-    name: "Custom Mechanical Part",
-    image: "https://via.placeholder.com/300x220?text=Mechanical+Part"
-  },
-  {
-    name: "Medical Model",
-    image: "https://via.placeholder.com/300x220?text=Medical+Model"
-  }
-];
 
 export default function Home() {
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [locationName, setLocationName] = useState("Detecting location...");
+  const [vendors, setVendors] = useState([]);
+
+  useEffect(() => {
+    const savedVendors = JSON.parse(localStorage.getItem("vendors") || "[]");
+    setVendors(savedVendors);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        () => setLocationName("Stores near your location"),
+        () => setLocationName("Location unavailable")
+      );
+    } else {
+      setLocationName("Location unavailable");
+    }
+  }, []);
+
+  const filteredVendors = useMemo(() => {
+    return vendors.filter((vendor) => {
+      const q = query.toLowerCase();
+      return (
+        vendor.storeName?.toLowerCase().includes(q) ||
+        vendor.locality?.toLowerCase().includes(q) ||
+        vendor.printers?.join(" ").toLowerCase().includes(q)
+      );
+    });
+  }, [vendors, query]);
+
+  const latestSales = [
+    "PLA prototype orders - 12 today",
+    "Resin miniatures - 8 today",
+    "Industrial ABS parts - 5 today"
+  ];
 
   return (
-    <div>
-      {/* HERO */}
-      <div style={hero}>
-        <div style={{ textAlign: "center" }}>
-          <h1 style={{ fontSize: "4rem", marginBottom: "1rem" }}>
-            Welcome to Zvertex3D
-          </h1>
-
-          <p style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
-            Professional 3D Printing and Prototyping Services
-          </p>
-
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-            <button onClick={() => navigate("/services")} style={btn}>
-              Explore Services
-            </button>
-            <button onClick={() => navigate("/upload")} style={btn}>
-              Upload Design
-            </button>
-          </div>
-        </div>
+    <div style={page}>
+      <div style={topBar}>
+        <span>📍 {locationName}</span>
+        <button style={vendorBtn} onClick={() => navigate("/vendor-register")}>
+          Vendor Registration
+        </button>
       </div>
 
-      {/* PRODUCTS SECTION */}
-      <section style={productSection}>
-        <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>
-          Our Products
-        </h2>
+      <div style={hero}>
+        <h1 style={title}>Welcome to Zvertex3D</h1>
+        <p style={subtitle}>Find nearby verified 3D printing vendors</p>
 
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search stores, printers, locality..."
+          style={searchBar}
+        />
+      </div>
+
+      <section style={section}>
+        <h2>Nearby Vendor Stores</h2>
         <div style={grid}>
-          {products.map((product, index) => (
-            <div key={index} style={card}>
-              <img
-                src={product.image}
-                alt={product.name}
-                style={image}
-              />
-              <h3>{product.name}</h3>
-            </div>
-          ))}
+          {filteredVendors.length ? (
+            filteredVendors.map((vendor) => (
+              <div key={vendor.id} style={card}>
+                {vendor.photo && <img src={vendor.photo} alt={vendor.storeName} style={image} />}
+                <h3>{vendor.storeName}</h3>
+                <p>Zvertex Code: {vendor.zCode}</p>
+                <p>Locality: {vendor.locality}</p>
+                <p>Printers: {vendor.printers.join(", ")}</p>
+                <p>Phone: {vendor.phone}</p>
+                <p>Email: {vendor.email}</p>
+              </div>
+            ))
+          ) : (
+            <p>No vendors found.</p>
+          )}
         </div>
       </section>
-    </div>
-  );
-}
 
-const hero = {
-  minHeight: "80vh",
-  background: "linear-gradient(135deg,#0D1B2A,#00BFFF)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  color: "white",
-  padding: "2rem"
-};
-
-const btn = {
-  padding: "1rem 2rem",
-  border: "none",
-  borderRadius: "8px",
-  background: "white",
-  color: "#0D1B2A",
-  fontWeight: "700",
-  cursor: "pointer"
-};
-
-const productSection = {
-  padding: "4rem 2rem",
-  background: "#f8fbff"
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
-  gap: "2rem",
-  maxWidth: "1100px",
-  margin: "auto"
-};
-
-const card = {
-  background: "white",
-  padding: "1rem",
-  borderRadius: "12px",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-  textAlign: "center"
-};
-
-const image = {
-  width: "100%",
-  borderRadius: "10px",
-  marginBottom: "1rem"
-};
+const saleCard = { ...card, textAlign: "center", fontWeight: "700" };
