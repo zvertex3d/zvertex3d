@@ -4,10 +4,12 @@ import VendorRegister from "./pages/VendorRegister";
 import Search from "./pages/Search";
 import Store from "./pages/Store";
 import Order from "./pages/Order";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/vendor-register" element={<VendorRegister />} />
