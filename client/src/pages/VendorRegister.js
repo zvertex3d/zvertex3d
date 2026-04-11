@@ -79,7 +79,4 @@ const input = {
   border: "1px solid #ccc"
 };
 const btn = {
-  padding: "1rem",
-  border: "none",
-  borderRadius: "10px",
 };

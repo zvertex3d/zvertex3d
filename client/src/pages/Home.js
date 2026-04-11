@@ -1,71 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-export default function Home() {
-  const navigate = useNavigate();
-  const [query, setQuery] = useState("");
-  const [locationName, setLocationName] = useState("Detecting location...");
-  const [vendors, setVendors] = useState([]);
-
-  useEffect(() => {
-    const savedVendors = JSON.parse(localStorage.getItem("vendors") || "[]");
-    setVendors(savedVendors);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        () => setLocationName("Stores near your location"),
-        () => setLocationName("Location unavailable")
-      );
-    } else {
-      setLocationName("Location unavailable");
-    }
-  }, []);
-
-  const filteredVendors = useMemo(() => {
-    return vendors.filter((vendor) => {
-      const q = query.toLowerCase();
-      return (
-        vendor.storeName?.toLowerCase().includes(q) ||
-        vendor.locality?.toLowerCase().includes(q) ||
-        vendor.printers?.join(" ").toLowerCase().includes(q)
-      );
-    });
-  }, [vendors, query]);
-
-  const latestSales = [
-    "PLA prototype orders - 12 today",
-    "Resin miniatures - 8 today",
-    "Industrial ABS parts - 5 today"
-  ];
-
-  return (
-    <div style={page}>
-      <div style={topBar}>
-        <span>📍 {locationName}</span>
-        <button style={vendorBtn} onClick={() => navigate("/vendor-register")}>
-          Vendor Registration
-        </button>
-      </div>
-
-      <div style={hero}>
-        <h1 style={title}>Welcome to Zvertex3D</h1>
-        <p style={subtitle}>Find nearby verified 3D printing vendors</p>
-
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search stores, printers, locality..."
-          style={searchBar}
-        />
-      </div>
-
-      <section style={section}>
-        <h2>Nearby Vendor Stores</h2>
-        <div style={grid}>
-          {filteredVendors.length ? (
-            filteredVendors.map((vendor) => (
               <div key={vendor.id} style={card}>
-                {vendor.photo && <img src={vendor.photo} alt={vendor.storeName} style={image} />}
+                {vendor.photo ? (
+                  <img src={vendor.photo} alt={vendor.storeName} style={image} />
+                ) : null}
                 <h3>{vendor.storeName}</h3>
                 <p>Zvertex Code: {vendor.zCode}</p>
                 <p>Locality: {vendor.locality}</p>
@@ -80,4 +17,64 @@ export default function Home() {
         </div>
       </section>
 
-const saleCard = { ...card, textAlign: "center", fontWeight: "700" };
+      <section style={section}>
+        <h2>Latest Sales</h2>
+        <div style={grid}>
+          {latestSales.map((sale, idx) => (
+            <div key={idx} style={saleCard}>{sale}</div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+const page = { minHeight: "100vh", background: "#f8fbff" };
+const topBar = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "1rem 2rem",
+  background: "#0D1B2A",
+  color: "white"
+};
+const vendorBtn = {
+  background: "#00BFFF",
+  color: "white",
+  border: "none",
+  borderRadius: "8px",
+  padding: "0.8rem 1.2rem",
+  cursor: "pointer"
+};
+const hero = { padding: "4rem 2rem", textAlign: "center" };
+const title = { fontSize: "3rem", color: "#0D1B2A" };
+const subtitle = { marginBottom: "2rem", color: "#555" };
+const searchBar = {
+  width: "100%",
+  maxWidth: "700px",
+  padding: "1rem",
+  borderRadius: "10px",
+  border: "1px solid #ccc"
+};
+const section = { padding: "2rem" };
+const grid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
+  gap: "1.5rem"
+};
+const card = {
+  background: "white",
+  borderRadius: "12px",
+  padding: "1rem",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+};
+const image = {
+  width: "100%",
+  borderRadius: "10px",
+  marginBottom: "1rem"
+};
+const saleCard = {
+  ...card,
+  textAlign: "center",
+  fontWeight: "700"
+};
