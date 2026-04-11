@@ -6,20 +6,24 @@ const Search = () => {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Vendors</h2>
+      <h2>Search Results</h2>
 
       {state?.length ? (
         state.map((item, i) => (
           <Card key={i} sx={{ mb: 2 }}>
             <CardContent>
-              <Typography variant="h6">{item.name}</Typography>
-              <Typography variant="body2">{item.location}</Typography>
-              <Typography variant="body2">{item.services}</Typography>
+              <Typography variant="h6">{item.name || "Vendor"}</Typography>
+              <Typography variant="body2">
+                {item.location || "Location not available"}
+              </Typography>
+              <Typography variant="body2">
+                {item.services || "Services not listed"}
+              </Typography>
             </CardContent>
           </Card>
         ))
       ) : (
-        <p>No vendors found</p>
+        <p>No results</p>
       )}
     </div>
   );

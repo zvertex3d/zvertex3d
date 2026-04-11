@@ -9,13 +9,18 @@ API.interceptors.response.use(
   () => Promise.resolve({ data: [] })
 );
 
-// SEARCH / MARKETPLACE
+// SEARCH
 export const searchAll = (q) => API.get(`/search?q=${q}`);
+
+// MARKETPLACE
 export const getVendors = () => API.get(`/vendors`);
-export const getVendorsByLocation = (loc) => API.get(`/vendors?location=${loc}`);
+export const getVendorsByLocation = (loc) =>
+  API.get(`/vendors?location=${loc}`);
 
 // VENDOR
-export const registerVendor = (data) => API.post(`/vendor/register`, data);
+export const registerVendor = (data) =>
+  API.post(`/vendor/register`, data);
 
 // ORDER
-export const placeOrder = (data) => API.post(`/order/place`, data);
+export const placeOrder = (data) =>
+  API.post(`/order/place`, data);

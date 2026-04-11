@@ -21,13 +21,13 @@ const Order = () => {
     <Container sx={{ mt: 4 }}>
       <h2>Place Order</h2>
 
-      <Button
-        variant="outlined"
-        component="label"
-        sx={{ mb: 2 }}
-      >
+      <Button variant="outlined" component="label" sx={{ mb: 2 }}>
         Upload File
-        <input type="file" hidden onChange={(e) => setFile(e.target.files[0])} />
+        <input
+          type="file"
+          hidden
+          onChange={(e) => setFile(e.target.files[0])}
+        />
       </Button>
 
       <TextField

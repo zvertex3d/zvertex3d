@@ -7,7 +7,6 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-
         <Typography
           variant="h6"
           sx={{ cursor: "pointer" }}
@@ -17,13 +16,14 @@ const Navbar = () => {
         </Typography>
 
         <Box sx={{ marginLeft: "auto" }}>
-          <Button onClick={() => navigate("/")}>Home</Button>
-          <Button onClick={() => navigate("/search")}>Marketplace</Button>
-          <Button onClick={() => navigate("/order")}>Order</Button>
-          <Button onClick={() => navigate("/vendor-register")}>Register</Button>
-          <Button onClick={() => navigate("/dashboard")}>Dashboard</Button>
+          <Button color="inherit" onClick={() => navigate("/")}>Home</Button>
+          <Button color="inherit" onClick={() => navigate("/search")}>Marketplace</Button>
+          <Button color="inherit" onClick={() => navigate("/order")}>Order</Button>
+          <Button color="inherit" onClick={() => navigate("/vendor-register")}>Register</Button>
+          <Button color="inherit" onClick={() => navigate("/dashboard")}>Dashboard</Button>
 
           <Button
+            color="inherit"
             onClick={() =>
               document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
             }
@@ -32,6 +32,7 @@ const Navbar = () => {
           </Button>
 
           <Button
+            color="inherit"
             onClick={() =>
               document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
             }
@@ -39,7 +40,6 @@ const Navbar = () => {
             Contact
           </Button>
         </Box>
-
       </Toolbar>
     </AppBar>
   );

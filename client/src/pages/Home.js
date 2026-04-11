@@ -22,11 +22,11 @@ const Home = () => {
   return (
     <Container sx={{ mt: 4 }}>
       <Paper sx={{ p: 4, textAlign: "center", mb: 6 }}>
-        <Typography variant="h4">Zvertex Marketplace</Typography>
+        <Typography variant="h4">Zvertex 3D Printing Services</Typography>
 
         <TextField
           fullWidth
-          label="Search vendors, services..."
+          label="Search products, vendors..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           sx={{ mt: 2 }}
@@ -45,18 +45,30 @@ const Home = () => {
         </Button>
       </Paper>
 
+      {/* FOOTER SECTION */}
       <Box id="about" sx={{ mt: 10, textAlign: "center" }}>
         <Typography variant="subtitle1">About</Typography>
         <Typography variant="body2">
-          Marketplace for 3D printing vendors and services.
+          Zvertex provides high-quality 3D printing solutions.
         </Typography>
       </Box>
 
       <Box id="contact" sx={{ mt: 3, textAlign: "center" }}>
         <Typography variant="subtitle1">Contact</Typography>
         <Typography variant="body2">
-          support@zvertex.com
+          support@zvertex.com | +91-XXXXXXXXXX
         </Typography>
+      </Box>
+
+      {/* ACTION BUTTONS */}
+      <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
+        <Button fullWidth variant="contained" onClick={() => navigate("/order")}>
+          Place Order
+        </Button>
+
+        <Button fullWidth variant="outlined" onClick={() => navigate("/vendor-register")}>
+          Become Vendor
+        </Button>
       </Box>
     </Container>
   );
