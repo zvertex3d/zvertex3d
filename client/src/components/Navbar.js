@@ -8,7 +8,6 @@ const Navbar = () => {
     <AppBar position="static">
       <Toolbar>
 
-        {/* LEFT LOGO */}
         <Typography
           variant="h6"
           sx={{ cursor: "pointer" }}
@@ -17,30 +16,25 @@ const Navbar = () => {
           Zvertex3D
         </Typography>
 
-        {/* RIGHT MENU */}
         <Box sx={{ marginLeft: "auto" }}>
-          <Button color="inherit" onClick={() => navigate("/")}>
-            Home
-          </Button>
-
-          <Button color="inherit" onClick={() => navigate("/order")}>
-            Order
-          </Button>
-
-          <Button color="inherit" onClick={() => navigate("/vendor-register")}>
-            Register
-          </Button>
+          <Button onClick={() => navigate("/")}>Home</Button>
+          <Button onClick={() => navigate("/search")}>Marketplace</Button>
+          <Button onClick={() => navigate("/order")}>Order</Button>
+          <Button onClick={() => navigate("/vendor-register")}>Register</Button>
+          <Button onClick={() => navigate("/dashboard")}>Dashboard</Button>
 
           <Button
-            color="inherit"
-            onClick={() => window.scrollTo({ top: 400, behavior: "smooth" })}
+            onClick={() =>
+              document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
+            }
           >
             About
           </Button>
 
           <Button
-            color="inherit"
-            onClick={() => window.scrollTo({ top: 700, behavior: "smooth" })}
+            onClick={() =>
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+            }
           >
             Contact
           </Button>

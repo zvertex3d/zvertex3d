@@ -1,38 +1,48 @@
-import React, { useState } from "react";
-import { TextField, Button } from "@mui/material";
+import { useState } from "react";
+import { Container, TextField, Button } from "@mui/material";
 import { registerVendor } from "../services/api";
 
 const VendorRegister = () => {
-  const [data, setData] = useState({
-    storeName: "",
-    phone: "",
-    email: "",
-    printers: "",
+  const [form, setForm] = useState({
+    name: "",
     location: "",
-    photos: []
+    services: ""
   });
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key]);
-    });
-
-    await registerVendor(formData);
-    alert("Registered Successfully");
+    await registerVendor(form);
+    alert("Registered!");
   };
 
   return (
-    <div>
+    <Container sx={{ mt: 4 }}>
       <h2>Vendor Registration</h2>
-      <TextField label="Store Name" onChange={(e) => setData({...data, storeName: e.target.value})}/>
-      <TextField label="Phone" onChange={(e) => setData({...data, phone: e.target.value})}/>
-      <TextField label="Email" onChange={(e) => setData({...data, email: e.target.value})}/>
-      <TextField label="Printers List" onChange={(e) => setData({...data, printers: e.target.value})}/>
-      <TextField label="Location" onChange={(e) => setData({...data, location: e.target.value})}/>
-      <input type="file" multiple onChange={(e) => setData({...data, photos: e.target.files})} />
-      <Button onClick={handleSubmit}>Submit</Button>
-    </div>
+
+      <TextField
+        fullWidth
+        label="Store Name"
+        sx={{ mb: 2 }}
+        onChange={(e) => setForm({ ...form, name: e.target.value })}
+      />
+
+      <TextField
+        fullWidth
+        label="Location"
+        sx={{ mb: 2 }}
+        onChange={(e) => setForm({ ...form, location: e.target.value })}
+      />
+
+      <TextField
+        fullWidth
+        label="Services (PLA, ABS, Resin...)"
+        sx={{ mb: 2 }}
+        onChange={(e) => setForm({ ...form, services: e.target.value })}
+      />
+
+      <Button variant="contained" onClick={handleSubmit}>
+        Submit
+      </Button>
+    </Container>
   );
 };
 

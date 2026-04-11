@@ -4,26 +4,18 @@ const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL || "/api"
 });
 
-// SAFE FALLBACK (NO CRASH)
 API.interceptors.response.use(
   (res) => res,
   () => Promise.resolve({ data: [] })
 );
 
-export const getNearbyVendors = (lat, lng) =>
-  API.get(`/vendor/nearby?lat=${lat}&lng=${lng}`);
+// SEARCH / MARKETPLACE
+export const searchAll = (q) => API.get(`/search?q=${q}`);
+export const getVendors = () => API.get(`/vendors`);
+export const getVendorsByLocation = (loc) => API.get(`/vendors?location=${loc}`);
 
-export const getLatestSales = () =>
-  API.get(`/sales/latest`);
+// VENDOR
+export const registerVendor = (data) => API.post(`/vendor/register`, data);
 
-export const searchAll = (q) =>
-  API.get(`/search?q=${q}`);
-
-export const registerVendor = (data) =>
-  API.post(`/vendor/register`, data);
-
-export const getStore = (code) =>
-  API.get(`/vendor/store/${code}`);
-
-export const placeOrder = (data) =>
-  API.post(`/order/place`, data);
+// ORDER
+export const placeOrder = (data) => API.post(`/order/place`, data);

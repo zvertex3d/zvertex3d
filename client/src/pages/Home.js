@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Paper
+  Container, TextField, Button, Typography, Box, Paper
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { searchAll } from "../services/api";
@@ -26,26 +21,18 @@ const Home = () => {
 
   return (
     <Container sx={{ mt: 4 }}>
-
-      {/* HERO / SEARCH */}
       <Paper sx={{ p: 4, textAlign: "center", mb: 6 }}>
-        <Typography variant="h4" gutterBottom>
-          Zvertex 3D Printing Services
-        </Typography>
+        <Typography variant="h4">Zvertex Marketplace</Typography>
 
         <TextField
           fullWidth
-          label="Search products, vendors, services..."
+          label="Search vendors, services..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           sx={{ mt: 2 }}
         />
 
-        <Button
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={handleSearch}
-        >
+        <Button variant="contained" sx={{ mt: 2 }} onClick={handleSearch}>
           Search
         </Button>
 
@@ -58,58 +45,19 @@ const Home = () => {
         </Button>
       </Paper>
 
-      {/* FOOTER SECTION (SMALL ABOUT + CONTACT) */}
-      <Box
-        id="about"
-        sx={{
-          mt: 10,
-          pt: 3,
-          borderTop: "1px solid #ddd",
-          textAlign: "center"
-        }}
-      >
+      <Box id="about" sx={{ mt: 10, textAlign: "center" }}>
         <Typography variant="subtitle1">About</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Zvertex provides high-quality 3D printing solutions including prototyping,
-          batch production, and industrial parts.
+        <Typography variant="body2">
+          Marketplace for 3D printing vendors and services.
         </Typography>
       </Box>
 
-      <Box
-        id="contact"
-        sx={{
-          mt: 3,
-          textAlign: "center"
-        }}
-      >
+      <Box id="contact" sx={{ mt: 3, textAlign: "center" }}>
         <Typography variant="subtitle1">Contact</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Email: support@zvertex.com | Phone: +91-XXXXXXXXXX
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Hyderabad, India
+        <Typography variant="body2">
+          support@zvertex.com
         </Typography>
       </Box>
-
-      {/* ACTION BUTTONS */}
-      <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
-        <Button
-          fullWidth
-          variant="contained"
-          onClick={() => navigate("/order")}
-        >
-          Place Order
-        </Button>
-
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={() => navigate("/vendor-register")}
-        >
-          Become a Vendor
-        </Button>
-      </Box>
-
     </Container>
   );
 };

@@ -1,44 +1,52 @@
-import React, { useState } from "react";
-import { TextField, Button, MenuItem, Container } from "@mui/material";
-import Navbar from "../components/Navbar";
+import { useState } from "react";
+import {
+  Container, Button, TextField, MenuItem
+} from "@mui/material";
 import { placeOrder } from "../services/api";
 
 const Order = () => {
-  const [data, setData] = useState({});
+  const [file, setFile] = useState(null);
+  const [material, setMaterial] = useState("");
 
-  const materials = ["PLA","PETG","Carbon Fiber","ABS","Aluminium","Others"];
-
-  const submit = async () => {
+  const handleSubmit = async () => {
     const formData = new FormData();
-    Object.keys(data).forEach(k => formData.append(k, data[k]));
+    formData.append("file", file);
+    formData.append("material", material);
+
     await placeOrder(formData);
-    alert("Order placed");
+    alert("Order placed!");
   };
 
   return (
-    <>
-      <Navbar />
-      <Container sx={{ mt: 4 }}>
-        <input type="file" onChange={(e)=>setData({...data,file:e.target.files[0]})} />
+    <Container sx={{ mt: 4 }}>
+      <h2>Place Order</h2>
 
-        <TextField fullWidth label="Color" onChange={(e)=>setData({...data,color:e.target.value})} />
+      <Button
+        variant="outlined"
+        component="label"
+        sx={{ mb: 2 }}
+      >
+        Upload File
+        <input type="file" hidden onChange={(e) => setFile(e.target.files[0])} />
+      </Button>
 
-        <TextField fullWidth label="Size (mm)" onChange={(e)=>setData({...data,size:e.target.value})} />
+      <TextField
+        select
+        fullWidth
+        label="Material"
+        sx={{ mb: 2 }}
+        value={material}
+        onChange={(e) => setMaterial(e.target.value)}
+      >
+        <MenuItem value="PLA">PLA</MenuItem>
+        <MenuItem value="ABS">ABS</MenuItem>
+        <MenuItem value="Resin">Resin</MenuItem>
+      </TextField>
 
-        <TextField
-          select
-          fullWidth
-          label="Material"
-          onChange={(e)=>setData({...data,material:e.target.value})}
-        >
-          {materials.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)}
-        </TextField>
-
-        <Button sx={{ mt: 2 }} variant="contained" onClick={submit}>
-          Place Order
-        </Button>
-      </Container>
-    </>
+      <Button variant="contained" onClick={handleSubmit}>
+        Place Order
+      </Button>
+    </Container>
   );
 };
 
