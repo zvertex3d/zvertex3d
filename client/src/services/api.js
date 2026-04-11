@@ -1,21 +1,18 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000"
+  baseURL: process.env.REACT_APP_API_URL || "/api"
 });
 
-// ✅ GLOBAL ERROR SAFE HANDLER
+// 🔥 NEVER BREAK UI AGAIN
 API.interceptors.response.use(
   (res) => res,
   (err) => {
-    console.error("API ERROR:", err?.response?.status, err?.config?.url);
-
-    // RETURN SAFE EMPTY RESPONSE TO AVOID CRASH
+    console.error("API ERROR:", err?.response?.status);
     return Promise.resolve({ data: [] });
   }
 );
 
-// ✅ FIXED ENDPOINTS
 export const getNearbyVendors = (lat, lng) =>
   API.get(`/vendor/nearby?lat=${lat}&lng=${lng}`);
 
