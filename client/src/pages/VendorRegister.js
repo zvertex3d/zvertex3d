@@ -1,43 +1,21 @@
-import { useState } from "react";
 import { Container, TextField, Button } from "@mui/material";
-import { registerVendor } from "../services/api";
 
 const VendorRegister = () => {
-  const [form, setForm] = useState({
-    name: "",
-    location: "",
-    services: ""
-  });
 
-  const handleSubmit = async () => {
-    await registerVendor(form);
-    alert("Registered!");
+  const handleSubmit = () => {
+    alert("Zvertex3D team will reach out to you via mail/phone.");
   };
 
   return (
     <Container sx={{ mt: 4 }}>
       <h2>Vendor Registration</h2>
 
-      <TextField
-        fullWidth
-        label="Store Name"
-        sx={{ mb: 2 }}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-      />
-
-      <TextField
-        fullWidth
-        label="Location"
-        sx={{ mb: 2 }}
-        onChange={(e) => setForm({ ...form, location: e.target.value })}
-      />
-
-      <TextField
-        fullWidth
-        label="Services (PLA, ABS, Resin...)"
-        sx={{ mb: 2 }}
-        onChange={(e) => setForm({ ...form, services: e.target.value })}
-      />
+      <TextField fullWidth label="Store Name" sx={{ mb: 2 }} />
+      <TextField fullWidth label="Printer Types" sx={{ mb: 2 }} />
+      <TextField fullWidth label="Number of Printers" sx={{ mb: 2 }} />
+      <TextField fullWidth label="Address" sx={{ mb: 2 }} />
+      <TextField fullWidth label="Email" sx={{ mb: 2 }} />
+      <TextField fullWidth label="Phone" sx={{ mb: 2 }} />
 
       <Button variant="contained" onClick={handleSubmit}>
         Submit

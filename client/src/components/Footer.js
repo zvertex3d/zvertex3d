@@ -1,42 +1,31 @@
-import React from "react";
+import { Box, Typography } from "@mui/material";
 
-export default function Footer() {
-  const latestProduct = localStorage.getItem("latestProductImage");
-
+const Footer = () => {
   return (
-    <footer style={footer}>
-      <div>
-        <h3>Contact Us</h3>
-        <p>📞 +91 8639684322</p>
-        <p>📧 zvertex3d@gmail.com</p>
-      </div>
+    <Box sx={{ mt: 8, p: 3, background: "#f5f5f5", textAlign: "center" }}>
+      
+      <Typography variant="h6">About</Typography>
+      <Typography variant="body2">
+        Zvertex provides complete 3D printing solutions across industries.
+      </Typography>
 
-      {latestProduct && (
-        <div>
-          <h3>Latest Uploaded Product</h3>
-          <img
-            src={latestProduct}
-            alt="latest product"
-            style={image}
-          />
-        </div>
-      )}
-    </footer>
+      <Typography variant="h6" sx={{ mt: 2 }}>Contact</Typography>
+      <Typography variant="body2">
+        Email: zvertex3d@gmail.com | Phone: +91-XXXXXXXXXX
+      </Typography>
+
+      <Typography variant="h6" sx={{ mt: 2 }}>Location</Typography>
+
+      <iframe
+        title="map"
+        src="https://www.google.com/maps?q=Hayathnagar,Hyderabad&output=embed"
+        width="100%"
+        height="200"
+        style={{ border: 0, marginTop: "10px" }}
+      />
+
+    </Box>
   );
-}
-
-const footer = {
-  background: "#0D1B2A",
-  color: "#fff",
-  padding: "2rem",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  flexWrap: "wrap"
 };
 
-const image = {
-  width: "150px",
-  borderRadius: "10px",
-  marginTop: "1rem"
-};
+export default Footer;

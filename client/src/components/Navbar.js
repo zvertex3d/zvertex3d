@@ -17,28 +17,9 @@ const Navbar = () => {
 
         <Box sx={{ marginLeft: "auto" }}>
           <Button color="inherit" onClick={() => navigate("/")}>Home</Button>
-          <Button color="inherit" onClick={() => navigate("/search")}>Marketplace</Button>
-          <Button color="inherit" onClick={() => navigate("/order")}>Order</Button>
+          <Button color="inherit" onClick={() => navigate("/marketplace")}>Marketplace</Button>
+          <Button color="inherit" onClick={() => navigate("/services")}>Services</Button>
           <Button color="inherit" onClick={() => navigate("/vendor-register")}>Register</Button>
-          <Button color="inherit" onClick={() => navigate("/dashboard")}>Dashboard</Button>
-
-          <Button
-            color="inherit"
-            onClick={() =>
-              document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            About
-          </Button>
-
-          <Button
-            color="inherit"
-            onClick={() =>
-              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            Contact
-          </Button>
         </Box>
       </Toolbar>
     </AppBar>

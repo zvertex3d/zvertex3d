@@ -1,75 +1,60 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Container, TextField, Button, Typography, Box, Paper
+  Container, Typography, Grid, Card, CardContent
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { searchAll } from "../services/api";
+
+const dummyVendors = [
+  { name: "Hyderabad Prints", location: "Hyderabad" },
+  { name: "3D Hub India", location: "Bangalore" }
+];
+
+const dummyOrders = [
+  { title: "Gear Prototype", review: "Great quality!" },
+  { title: "Medical Model", review: "Very accurate print" }
+];
 
 const Home = () => {
-  const [search, setSearch] = useState("");
-  const navigate = useNavigate();
-
-  const handleSearch = async () => {
-    try {
-      const res = await searchAll(search);
-      const data = Array.isArray(res?.data) ? res.data : [];
-      navigate("/search", { state: data });
-    } catch {
-      navigate("/search", { state: [] });
-    }
-  };
-
   return (
     <Container sx={{ mt: 4 }}>
-      <Paper sx={{ p: 4, textAlign: "center", mb: 6 }}>
-        <Typography variant="h4">Zvertex 3D Printing Services</Typography>
 
-        <TextField
-          fullWidth
-          label="Search products, vendors..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ mt: 2 }}
-        />
+      <Typography variant="h3" align="center">
+        Welcome to the world of 3D Printing
+      </Typography>
 
-        <Button variant="contained" sx={{ mt: 2 }} onClick={handleSearch}>
-          Search
-        </Button>
+      <Typography variant="h5" align="center" sx={{ mt: 2 }}>
+        All 3D Printing field under one roof
+      </Typography>
 
-        <Button
-          variant="outlined"
-          sx={{ mt: 2, ml: 2 }}
-          onClick={() => navigate("/vendor-register")}
-        >
-          Register Vendor
-        </Button>
-      </Paper>
+      {/* LATEST ORDERS */}
+      <Typography variant="h5" sx={{ mt: 5 }}>Latest Orders & Reviews</Typography>
+      <Grid container spacing={2}>
+        {dummyOrders.map((o, i) => (
+          <Grid item xs={12} md={4} key={i}>
+            <Card>
+              <CardContent>
+                <h4>{o.title}</h4>
+                <p>{o.review}</p>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-      {/* FOOTER SECTION */}
-      <Box id="about" sx={{ mt: 10, textAlign: "center" }}>
-        <Typography variant="subtitle1">About</Typography>
-        <Typography variant="body2">
-          Zvertex provides high-quality 3D printing solutions.
-        </Typography>
-      </Box>
+      {/* VENDORS */}
+      <Typography variant="h5" sx={{ mt: 5 }}>Latest Vendors</Typography>
+      <Grid container spacing={2}>
+        {dummyVendors.map((v, i) => (
+          <Grid item xs={12} md={4} key={i}>
+            <Card>
+              <CardContent>
+                <h4>{v.name}</h4>
+                <p>{v.location}</p>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-      <Box id="contact" sx={{ mt: 3, textAlign: "center" }}>
-        <Typography variant="subtitle1">Contact</Typography>
-        <Typography variant="body2">
-          support@zvertex.com | +91-XXXXXXXXXX
-        </Typography>
-      </Box>
-
-      {/* ACTION BUTTONS */}
-      <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
-        <Button fullWidth variant="contained" onClick={() => navigate("/order")}>
-          Place Order
-        </Button>
-
-        <Button fullWidth variant="outlined" onClick={() => navigate("/vendor-register")}>
-          Become Vendor
-        </Button>
-      </Box>
     </Container>
   );
 };
