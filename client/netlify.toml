@@ -1,12 +1,9 @@
 [build]
-  base = "client"
   command = "npm install && npm run build"
-  publish = "client/build"
+  publish = "build"
 
-[[redirects]]
-  from = "/api/*"
-  to = "https://your-backend-url.com/:splat"
-  status = 200
+[build.environment]
+  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/*"
