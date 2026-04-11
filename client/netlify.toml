@@ -1,6 +1,9 @@
 [build]
-  command = "npm install && npm run build"
+  command = "npm install && chmod +x node_modules/.bin/react-scripts && npm run build"
   publish = "build"
+
+[build.environment]
+  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/*"
