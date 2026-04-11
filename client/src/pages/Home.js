@@ -5,12 +5,10 @@ import {
   Button,
   Typography,
   Box,
-  Grid,
   Paper
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { searchAll } from "../services/api";
-import Navbar from "../components/Navbar";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -27,84 +25,92 @@ const Home = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <Container sx={{ mt: 4 }}>
 
-      <Container sx={{ mt: 4 }}>
+      {/* HERO / SEARCH */}
+      <Paper sx={{ p: 4, textAlign: "center", mb: 6 }}>
+        <Typography variant="h4" gutterBottom>
+          Zvertex 3D Printing Services
+        </Typography>
 
-        {/* HERO / SEARCH */}
-        <Paper sx={{ p: 4, textAlign: "center", mb: 4 }}>
-          <Typography variant="h4" gutterBottom>
-            Zvertex 3D Printing Services
-          </Typography>
+        <TextField
+          fullWidth
+          label="Search products, vendors, services..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ mt: 2 }}
+        />
 
-          <TextField
-            fullWidth
-            label="Search products, vendors, services..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            sx={{ mt: 2 }}
-          />
+        <Button
+          variant="contained"
+          sx={{ mt: 2 }}
+          onClick={handleSearch}
+        >
+          Search
+        </Button>
 
-          <Button
-            variant="contained"
-            sx={{ mt: 2 }}
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
+        <Button
+          variant="outlined"
+          sx={{ mt: 2, ml: 2 }}
+          onClick={() => navigate("/vendor-register")}
+        >
+          Register Vendor
+        </Button>
+      </Paper>
 
-          <Button
-            variant="outlined"
-            sx={{ mt: 2, ml: 2 }}
-            onClick={() => navigate("/vendor-register")}
-          >
-            Register Vendor
-          </Button>
-        </Paper>
+      {/* FOOTER SECTION (SMALL ABOUT + CONTACT) */}
+      <Box
+        id="about"
+        sx={{
+          mt: 10,
+          pt: 3,
+          borderTop: "1px solid #ddd",
+          textAlign: "center"
+        }}
+      >
+        <Typography variant="subtitle1">About</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Zvertex provides high-quality 3D printing solutions including prototyping,
+          batch production, and industrial parts.
+        </Typography>
+      </Box>
 
-        {/* ABOUT */}
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h5">About Us</Typography>
-          <Typography>
-            Zvertex provides high-quality 3D printing solutions including
-            prototyping, batch production, and industrial parts using advanced materials.
-          </Typography>
-        </Box>
+      <Box
+        id="contact"
+        sx={{
+          mt: 3,
+          textAlign: "center"
+        }}
+      >
+        <Typography variant="subtitle1">Contact</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Email: support@zvertex.com | Phone: +91-XXXXXXXXXX
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Hyderabad, India
+        </Typography>
+      </Box>
 
-        {/* CONTACT */}
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h5">Contact</Typography>
-          <Typography>Email: support@zvertex.com</Typography>
-          <Typography>Phone: +91-XXXXXXXXXX</Typography>
-          <Typography>Location: Hyderabad, India</Typography>
-        </Box>
+      {/* ACTION BUTTONS */}
+      <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={() => navigate("/order")}
+        >
+          Place Order
+        </Button>
 
-        {/* QUICK ACTIONS */}
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => navigate("/order")}
-            >
-              Place Order
-            </Button>
-          </Grid>
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={() => navigate("/vendor-register")}
+        >
+          Become a Vendor
+        </Button>
+      </Box>
 
-          <Grid item xs={12} md={6}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => navigate("/vendor-register")}
-            >
-              Become a Vendor
-            </Button>
-          </Grid>
-        </Grid>
-
-      </Container>
-    </>
+    </Container>
   );
 };
 
