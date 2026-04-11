@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Grid, Card, CardContent } from "@mui/material";
+import {
+  TextField, Button, Grid, Card, CardContent, Container
+} from "@mui/material";
 import { getNearbyVendors, getLatestSales, searchAll } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   const [vendors, setVendors] = useState([]);
@@ -16,14 +19,35 @@ const Home = () => {
 
   const fetchNearby = async () => {
     try {
-      navigator.geolocation.getCurrentPosition(async (pos) => {
-        const { latitude, longitude } = pos.coords;
-        const res = await getNearbyVendors(latitude, longitude);
+      if (!navigator.geolocation) {
+        setVendors([]);
+        return;
+      }
 
-        // ✅ FIX: ensure array
-        setVendors(Array.isArray(res.data) ? res.data : []);
-      });
-    } catch (err) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try {
+            const res = await getNearbyVendors(
+              pos.coords.latitude,
+              pos.coords.longitude
+            );
+
+            // ✅ HARD FIX (handles all cases)
+            const data = res?.data;
+            if (Array.isArray(data)) {
+              setVendors(data);
+            } else if (Array.isArray(data?.vendors)) {
+              setVendors(data.vendors);
+            } else {
+              setVendors([]);
+            }
+          } catch {
+            setVendors([]);
+          }
+        },
+        () => setVendors([])
+      );
+    } catch {
       setVendors([]);
     }
   };
@@ -32,68 +56,97 @@ const Home = () => {
     try {
       const res = await getLatestSales();
 
-      // ✅ FIX: ensure array
-      setSales(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
+      // ✅ HARD FIX
+      const data = res?.data;
+      if (Array.isArray(data)) {
+        setSales(data);
+      } else if (Array.isArray(data?.sales)) {
+        setSales(data.sales);
+      } else {
+        setSales([]);
+      }
+    } catch {
       setSales([]);
     }
   };
 
   const handleSearch = async () => {
-    const res = await searchAll(search);
-    navigate("/search", { state: res.data });
+    try {
+      const res = await searchAll(search);
+      const data = Array.isArray(res?.data) ? res.data : [];
+      navigate("/search", { state: data });
+    } catch {
+      navigate("/search", { state: [] });
+    }
   };
 
   return (
-    <div>
-      <h2>Welcome to Zvertex</h2>
+    <>
+      <Navbar />
+      <Container sx={{ mt: 4 }}>
+        <TextField
+          fullWidth
+          label="Search vendors, services..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-      {/* Search */}
-      <TextField
-        label="Search printers, vendors, services"
-        fullWidth
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <Button onClick={handleSearch}>Search</Button>
+        <Button
+          sx={{ mt: 2 }}
+          variant="contained"
+          onClick={handleSearch}
+        >
+          Search
+        </Button>
 
-      {/* Vendor Register CTA */}
-      <Button variant="contained" onClick={() => navigate("/vendor-register")}>
-        Register Your Store
-      </Button>
+        <Button
+          sx={{ mt: 2, ml: 2 }}
+          variant="outlined"
+          onClick={() => navigate("/vendor-register")}
+        >
+          Register Vendor
+        </Button>
 
-      {/* Nearby Vendors */}
-      <h3>Nearby Vendors</h3>
-      <Grid container spacing={2}>
-        {Array.isArray(vendors) &&
-          vendors.map((v) => (
-            <Grid item xs={4} key={v._id}>
-              <Card>
-                <CardContent>
-                  <h4>{v.storeName}</h4>
-                  <p>{v.location}</p>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-      </Grid>
+        <h3>Nearby Vendors</h3>
+        <Grid container spacing={2}>
+          {Array.isArray(vendors) && vendors.length > 0 ? (
+            vendors.map((v) => (
+              <Grid item xs={12} md={4} key={v._id || v.zvertexCode}>
+                <Card
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => navigate(`/store/${v.zvertexCode}`)}
+                >
+                  <CardContent>
+                    <h4>{v.storeName}</h4>
+                    <p>{v.location}</p>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <p>No vendors found</p>
+          )}
+        </Grid>
 
-      {/* Latest Sales */}
-      <h3>Latest Sales</h3>
-      <Grid container spacing={2}>
-        {Array.isArray(sales) &&
-          sales.map((s) => (
-            <Grid item xs={4} key={s._id}>
-              <Card>
-                <CardContent>
-                  <p>{s.title}</p>
-                  <p>{s.price}</p>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-      </Grid>
-    </div>
+        <h3 style={{ marginTop: "30px" }}>Latest Sales</h3>
+        <Grid container spacing={2}>
+          {Array.isArray(sales) && sales.length > 0 ? (
+            sales.map((s) => (
+              <Grid item xs={12} md={4} key={s._id}>
+                <Card>
+                  <CardContent>
+                    <p>{s.title || "Order"}</p>
+                    <p>₹{s.price || "-"}</p>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <p>No sales available</p>
+          )}
+        </Grid>
+      </Container>
+    </>
   );
 };
 
