@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -7,13 +7,45 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+
+        {/* LEFT LOGO */}
+        <Typography
+          variant="h6"
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
           Zvertex3D
         </Typography>
 
-        <Button color="inherit" onClick={() => navigate("/")}>Home</Button>
-        <Button color="inherit" onClick={() => navigate("/order")}>Order</Button>
-        <Button color="inherit" onClick={() => navigate("/vendor-register")}>Vendor</Button>
+        {/* RIGHT MENU */}
+        <Box sx={{ marginLeft: "auto" }}>
+          <Button color="inherit" onClick={() => navigate("/")}>
+            Home
+          </Button>
+
+          <Button color="inherit" onClick={() => navigate("/order")}>
+            Order
+          </Button>
+
+          <Button color="inherit" onClick={() => navigate("/vendor-register")}>
+            Register
+          </Button>
+
+          <Button
+            color="inherit"
+            onClick={() => window.scrollTo({ top: 400, behavior: "smooth" })}
+          >
+            About
+          </Button>
+
+          <Button
+            color="inherit"
+            onClick={() => window.scrollTo({ top: 700, behavior: "smooth" })}
+          >
+            Contact
+          </Button>
+        </Box>
+
       </Toolbar>
     </AppBar>
   );
