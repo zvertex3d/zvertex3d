@@ -1,35 +1,46 @@
-<AppBar
-  position="static"
-  elevation={0}
-  sx={{ background: "transparent", color: "#000", px: 4 }}
->
-  <Toolbar>
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-    <Typography
-      variant="h6"
-      onClick={() => navigate("/")}
-      sx={{ cursor: "pointer", fontWeight: 600 }}
+const Navbar = () => {
+  const navigate = useNavigate();
+
+  return (
+    <AppBar
+      position="static"
+      elevation={0}
+      sx={{ background: "transparent", color: "#000", px: 4 }}
     >
-      Zvertex3D
-    </Typography>
+      <Toolbar>
 
-    <Box sx={{ marginLeft: "auto", display: "flex", gap: 3 }}>
-      <Button onClick={() => navigate("/")}>Home</Button>
-      <Button onClick={() => navigate("/marketplace")}>Marketplace</Button>
-      <Button onClick={() => navigate("/services")}>Services</Button>
-      <Button onClick={() => navigate("/vendor-register")}>Register</Button>
+        <Typography
+          variant="h6"
+          onClick={() => navigate("/")}
+          sx={{ cursor: "pointer", fontWeight: 600 }}
+        >
+          Zvertex3D
+        </Typography>
 
-      <Button
-        variant="contained"
-        sx={{
-          background: "#5B6E3A",
-          borderRadius: "20px",
-          px: 3
-        }}
-      >
-        Learn More
-      </Button>
-    </Box>
+        <Box sx={{ marginLeft: "auto", display: "flex", gap: 3 }}>
+          <Button onClick={() => navigate("/")}>Home</Button>
+          <Button onClick={() => navigate("/marketplace")}>Marketplace</Button>
+          <Button onClick={() => navigate("/services")}>Services</Button>
+          <Button onClick={() => navigate("/vendor-register")}>Register</Button>
 
-  </Toolbar>
-</AppBar>
+          <Button
+            variant="contained"
+            sx={{
+              background: "#5B6E3A",
+              borderRadius: "20px",
+              px: 3
+            }}
+          >
+            Learn More
+          </Button>
+        </Box>
+
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default Navbar;
