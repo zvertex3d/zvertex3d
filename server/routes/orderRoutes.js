@@ -1,11 +1,10 @@
 const express = require("express");
 const Order = require("../models/Order");
 const { sendMail } = require("../utils/mailer");
-const createOrder = require("../utils/payment");
 
 const router = express.Router();
 
-/* PRICE ENGINE */
+// ✅ PRICE CALCULATION
 const calculateAIPrice = (size, material, delivery) => {
   let base = 200;
 
@@ -23,7 +22,7 @@ const calculateAIPrice = (size, material, delivery) => {
   return base;
 };
 
-/* PLACE ORDER */
+// ✅ PLACE ORDER (NO PAYMENT GATEWAY)
 router.post("/place", async (req, res) => {
   try {
     const { email, phone, size, material, delivery, vendorId } = req.body;
@@ -34,34 +33,47 @@ router.post("/place", async (req, res) => {
       email,
       phone,
       price,
-      vendorId
+      vendorId,
+      status: "Order Placed"
     });
 
+    // ✅ SEND EMAIL CONFIRMATION
     await sendMail(
       email,
-      "Order Confirmation",
-      `Your order is confirmed.\nAmount: ₹${price}`
+      "Zvertex3D Order Confirmation",
+      `Your order has been placed successfully.
+
+Details:
+Amount: ₹${price}
+Status: Order Placed
+
+We will contact you shortly.`
     );
 
-    const payment = await createOrder(price);
-
-    res.json({ order, payment });
+    res.json({
+      success: true,
+      message: "Order placed successfully",
+      order
+    });
 
   } catch (err) {
-    res.status(500).json({ error: "Order failed" });
+    console.error("ORDER ERROR:", err);
+    res.status(500).json({
+      success: false,
+      message: "Order failed"
+    });
   }
 });
 
-/* GET ORDERS FOR STORE */
+// ✅ GET ORDERS FOR VENDOR
 router.get("/vendor/:vendorId", async (req, res) => {
   try {
-    const orders = await Order.find({ vendorId: req.params.vendorId })
-      .sort({ createdAt: -1 });
-
+    const orders = await Order.find({
+      vendorId: req.params.vendorId
+    });
     res.json(orders);
-
   } catch (err) {
-    res.status(500).json({ error: "Fetch failed" });
+    res.status(500).json([]);
   }
 });
 
