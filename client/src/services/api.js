@@ -7,3 +7,7 @@ const API = axios.create({
 export const registerVendor = (data) => API.post("/vendor/register", data);
 export const getVendors = () => API.get("/vendor");
 export const placeOrder = (data) => API.post("/order/place", data);
+
+export const getVendorStore = (id) => API.get(`/vendor/${id}`);
+export const addProduct = (id, data) => API.post(`/vendor/product/${id}`, data);
+export const getVendorOrders = (id) => API.get(`/order/vendor/${id}`);

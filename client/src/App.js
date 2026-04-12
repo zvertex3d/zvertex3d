@@ -10,6 +10,7 @@ import Marketplace from "./pages/Marketplace";
 import Services from "./pages/Services";
 import Search from "./pages/Search";
 import Order from "./pages/Order";
+import Store from "./pages/Store";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/services" element={<Services />} />
             <Route path="/search" element={<Search />} />
             <Route path="/order" element={<Order />} />
+            <Route path="/store/:id" element={<Store />} />
           </Routes>
         </Box>
 

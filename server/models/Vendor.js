@@ -6,7 +6,10 @@ const VendorSchema = new mongoose.Schema({
   address: String,
   phone: String,
   email: String,
-  photo: String
+  photo: String,
+  approved: { type: Boolean, default: false },
+  code: String,
+  products: [{ name: String, price: Number, image: String }]
 });
 
 module.exports = mongoose.model("Vendor", VendorSchema);

@@ -4,7 +4,21 @@ const OrderSchema = new mongoose.Schema({
   email: String,
   phone: String,
   price: Number,
-  createdAt: { type: Date, default: Date.now }
+
+  vendorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Vendor"
+  },
+
+  status: {
+    type: String,
+    default: "Placed"
+  },
+
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model("Order", OrderSchema);

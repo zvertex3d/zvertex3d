@@ -27,8 +27,10 @@ const Marketplace = () => {
       <Grid container spacing={3}>
         {vendors.map((v) => (
           <Grid item xs={12} md={3} key={v._id}>
-            <Card onClick={() => navigate(`/store/${v._id}`)} sx={{ cursor:"pointer" }}>
-              
+            <Card
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(`/store/${v._id}`)}
+            >
               <CardMedia
                 component="img"
                 height="160"
@@ -40,7 +42,6 @@ const Marketplace = () => {
                 <Typography>{v.address}</Typography>
                 <Typography color="primary">{v.code}</Typography>
               </CardContent>
-
             </Card>
           </Grid>
         ))}

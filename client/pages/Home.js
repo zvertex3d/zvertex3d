@@ -1,125 +1,116 @@
-import React, { useEffect, useState } from "react";
 import {
-  TextField, Button, Grid, Card, CardContent, Container
+  Container,
+  Typography,
+  Box,
+  Button,
+  TextField,
+  MenuItem,
+  Grid,
+  Card,
+  CardContent
 } from "@mui/material";
-import { getNearbyVendors, getLatestSales, searchAll } from "../services/api";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import { useState, useEffect } from "react";
+import ModelViewer from "../components/ModelViewer";
+import { getVendors } from "../services/api";
+
+const showcase = [
+  { title: "Drone Frame", price: 1200, img: "https://via.placeholder.com/200" },
+  { title: "Medical Model", price: 900, img: "https://via.placeholder.com/200" },
+  { title: "Gear", price: 700, img: "https://via.placeholder.com/200" },
+  { title: "Custom Part", price: 500, img: "https://via.placeholder.com/200" }
+];
 
 const Home = () => {
+  const [file, setFile] = useState(null);
+  const [price, setPrice] = useState(0);
   const [vendors, setVendors] = useState([]);
-  const [sales, setSales] = useState([]);
-  const [search, setSearch] = useState("");
-  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    size: "",
+    material: "",
+    delivery: ""
+  });
 
   useEffect(() => {
-    loadNearby();
-    loadSales();
+    getVendors().then(res => setVendors(res.data.slice(0, 4)));
   }, []);
 
-  const safeArray = (data) => {
-    if (!data) return [];
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data.data)) return data.data;
-    if (Array.isArray(data.vendors)) return data.vendors;
-    if (Array.isArray(data.sales)) return data.sales;
-    return [];
+  const handleUpload = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setFile(URL.createObjectURL(f));
   };
 
-  const loadNearby = async () => {
-    try {
-      navigator.geolocation?.getCurrentPosition(
-        async (pos) => {
-          const res = await getNearbyVendors(
-            pos.coords.latitude,
-            pos.coords.longitude
-          );
-          setVendors(safeArray(res?.data));
-        },
-        () => setVendors([])
-      );
-    } catch {
-      setVendors([]);
-    }
+  const calculatePrice = () => {
+    let base = 200;
+    base += form.size * 40;
+
+    if (form.material === "PLA") base += 100;
+    if (form.material === "PETG") base += 200;
+    if (form.material === "ABS") base += 300;
+    if (form.material === "Carbon Fiber") base += 500;
+
+    if (form.delivery == 2) base += 400;
+    if (form.delivery == 4) base += 200;
+    if (form.delivery == 6) base += 100;
+
+    setPrice(base);
   };
 
-  const loadSales = async () => {
-    try {
-      const res = await getLatestSales();
-      setSales(safeArray(res?.data));
-    } catch {
-      setSales([]);
+  useEffect(() => {
+    if (form.size && form.material && form.delivery) {
+      calculatePrice();
     }
-  };
-
-  const handleSearch = async () => {
-    try {
-      const res = await searchAll(search);
-      navigate("/search", { state: safeArray(res?.data) });
-    } catch {
-      navigate("/search", { state: [] });
-    }
-  };
+  }, [form]);
 
   return (
-    <>
-      <Navbar />
-      <Container sx={{ mt: 4 }}>
+    <Container maxWidth="lg">
 
-        <TextField
-          fullWidth
-          label="Search vendors, services..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      <Box sx={{ textAlign: "center", mt: 8 }}>
+        <Typography variant="h1">3D Print everything.</Typography>
 
-        <Button sx={{ mt: 2 }} variant="contained" onClick={handleSearch}>
-          Search
+        <Button variant="contained" component="label">
+          Upload Photo to Get Price Quote
+          <input hidden type="file" onChange={handleUpload} />
         </Button>
+      </Box>
 
-        <Button
-          sx={{ mt: 2, ml: 2 }}
-          variant="outlined"
-          onClick={() => navigate("/vendor-register")}
-        >
-          Register Vendor
-        </Button>
+      {file && (
+        <Box sx={{ textAlign: "center", mt: 4 }}>
+          <ModelViewer fileUrl={file} />
+          <Typography>₹{price}</Typography>
+        </Box>
+      )}
 
-        <h3 style={{ marginTop: 30 }}>Nearby Vendors</h3>
+      {/* LATEST VENDORS */}
+      <Typography variant="h4" sx={{ mt: 6 }}>Latest Vendors</Typography>
+      <Grid container spacing={2}>
+        {vendors.map(v => (
+          <Grid item xs={12} md={3} key={v._id}>
+            <Card>
+              <img src={v.photo} style={{ width: "100%" }} />
+              <CardContent>{v.name}</CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-        <Grid container spacing={2}>
-          {safeArray(vendors).map((v, i) => (
-            <Grid item xs={12} md={4} key={v?._id || i}>
-              <Card
-                sx={{ cursor: "pointer" }}
-                onClick={() => v?.zvertexCode && navigate(`/store/${v.zvertexCode}`)}
-              >
-                <CardContent>
-                  <h4>{v?.storeName || "Vendor"}</h4>
-                  <p>{v?.location || "-"}</p>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+      {/* SHOWCASE */}
+      <Typography variant="h4" sx={{ mt: 6 }}>Our Works</Typography>
+      <Grid container spacing={2}>
+        {showcase.map((s,i)=>(
+          <Grid item xs={12} md={3} key={i}>
+            <Card>
+              <img src={s.img} style={{ width:"100%" }} />
+              <CardContent>
+                {s.title} - ₹{s.price}
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-        <h3 style={{ marginTop: 30 }}>Latest Sales</h3>
-
-        <Grid container spacing={2}>
-          {safeArray(sales).map((s, i) => (
-            <Grid item xs={12} md={4} key={s?._id || i}>
-              <Card>
-                <CardContent>
-                  <p>{s?.title || "Order"}</p>
-                  <p>₹{s?.price || "-"}</p>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-      </Container>
-    </>
+    </Container>
   );
 };
 
