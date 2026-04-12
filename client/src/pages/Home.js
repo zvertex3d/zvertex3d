@@ -1,39 +1,60 @@
-import React from "react";
 import {
-  Container, Typography, Grid, Card, CardContent
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Box
 } from "@mui/material";
 
-const dummyVendors = [
-  { name: "Hyderabad Prints", location: "Hyderabad" },
-  { name: "3D Hub India", location: "Bangalore" }
-];
-
-const dummyOrders = [
-  { title: "Gear Prototype", review: "Great quality!" },
-  { title: "Medical Model", review: "Very accurate print" }
-];
-
 const Home = () => {
+  const vendors = [{ name: "Demo Vendor", location: "Hyderabad" }];
+  const orders = [{ title: "Prototype", review: "Excellent print!" }];
+
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container maxWidth="lg">
 
-      <Typography variant="h3" align="center">
-        Welcome to the world of 3D Printing
+      {/* HERO */}
+      <Box sx={{ textAlign: "center", mt: 8, mb: 6 }}>
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: { xs: "2.5rem", md: "4rem" },
+            mb: 2
+          }}
+        >
+          Browse everything.
+        </Typography>
+
+        <Typography variant="h5" color="text.secondary">
+          All 3D Printing solutions under one platform
+        </Typography>
+      </Box>
+
+      {/* HERO IMAGE BLOCK */}
+      <Box
+        sx={{
+          background: "#cfd6c2",
+          height: 300,
+          borderRadius: 6,
+          mb: 6
+        }}
+      />
+
+      {/* ORDERS */}
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Latest Orders
       </Typography>
 
-      <Typography variant="h5" align="center" sx={{ mt: 2 }}>
-        All 3D Printing field under one roof
-      </Typography>
-
-      {/* LATEST ORDERS */}
-      <Typography variant="h5" sx={{ mt: 5 }}>Latest Orders & Reviews</Typography>
-      <Grid container spacing={2}>
-        {dummyOrders.map((o, i) => (
+      <Grid container spacing={3}>
+        {orders.map((o, i) => (
           <Grid item xs={12} md={4} key={i}>
-            <Card>
+            <Card sx={{ borderRadius: 4 }}>
               <CardContent>
-                <h4>{o.title}</h4>
-                <p>{o.review}</p>
+                <Typography variant="h6">{o.title}</Typography>
+                <Typography color="text.secondary">
+                  {o.review}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -41,14 +62,19 @@ const Home = () => {
       </Grid>
 
       {/* VENDORS */}
-      <Typography variant="h5" sx={{ mt: 5 }}>Latest Vendors</Typography>
-      <Grid container spacing={2}>
-        {dummyVendors.map((v, i) => (
+      <Typography variant="h5" sx={{ mt: 6, mb: 2 }}>
+        Latest Vendors
+      </Typography>
+
+      <Grid container spacing={3}>
+        {vendors.map((v, i) => (
           <Grid item xs={12} md={4} key={i}>
-            <Card>
+            <Card sx={{ borderRadius: 4 }}>
               <CardContent>
-                <h4>{v.name}</h4>
-                <p>{v.location}</p>
+                <Typography variant="h6">{v.name}</Typography>
+                <Typography color="text.secondary">
+                  {v.location}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>

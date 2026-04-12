@@ -1,25 +1,33 @@
-import { Container, TextField, Button } from "@mui/material";
+import { Container, TextField, Button, Box, Typography } from "@mui/material";
 
 const VendorRegister = () => {
-
-  const handleSubmit = () => {
-    alert("Zvertex3D team will reach out to you via mail/phone.");
-  };
-
   return (
-    <Container sx={{ mt: 4 }}>
-      <h2>Vendor Registration</h2>
+    <Container maxWidth="sm">
+      <Box sx={{ mt: 8 }}>
 
-      <TextField fullWidth label="Store Name" sx={{ mb: 2 }} />
-      <TextField fullWidth label="Printer Types" sx={{ mb: 2 }} />
-      <TextField fullWidth label="Number of Printers" sx={{ mb: 2 }} />
-      <TextField fullWidth label="Address" sx={{ mb: 2 }} />
-      <TextField fullWidth label="Email" sx={{ mb: 2 }} />
-      <TextField fullWidth label="Phone" sx={{ mb: 2 }} />
+        <Typography variant="h3" gutterBottom>
+          Vendor Registration
+        </Typography>
 
-      <Button variant="contained" onClick={handleSubmit}>
-        Submit
-      </Button>
+        <TextField fullWidth label="Store Name" sx={{ mb: 2 }} />
+        <TextField fullWidth label="Printer Types" sx={{ mb: 2 }} />
+        <TextField fullWidth label="Number of Printers" sx={{ mb: 2 }} />
+        <TextField fullWidth label="Address" sx={{ mb: 2 }} />
+        <TextField fullWidth label="Email" sx={{ mb: 2 }} />
+        <TextField fullWidth label="Phone" sx={{ mb: 3 }} />
+
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{
+            py: 1.5,
+            borderRadius: "20px"
+          }}
+        >
+          Submit
+        </Button>
+
+      </Box>
     </Container>
   );
 };

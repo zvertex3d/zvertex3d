@@ -2,7 +2,14 @@ import { Box, Typography } from "@mui/material";
 
 const Footer = () => {
   return (
-    <Box sx={{ mt: 8, p: 3, background: "#f5f5f5", textAlign: "center" }}>
+    <Box
+  sx={{
+    mt: 10,
+    p: 5,
+    background: "#eef1e8",
+    textAlign: "center"
+  }}
+>
       
       <Typography variant="h6">About</Typography>
       <Typography variant="body2">

@@ -1,29 +1,35 @@
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+<AppBar
+  position="static"
+  elevation={0}
+  sx={{ background: "transparent", color: "#000", px: 4 }}
+>
+  <Toolbar>
 
-const Navbar = () => {
-  const navigate = useNavigate();
+    <Typography
+      variant="h6"
+      onClick={() => navigate("/")}
+      sx={{ cursor: "pointer", fontWeight: 600 }}
+    >
+      Zvertex3D
+    </Typography>
 
-  return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography
-          variant="h6"
-          sx={{ cursor: "pointer" }}
-          onClick={() => navigate("/")}
-        >
-          Zvertex3D
-        </Typography>
+    <Box sx={{ marginLeft: "auto", display: "flex", gap: 3 }}>
+      <Button onClick={() => navigate("/")}>Home</Button>
+      <Button onClick={() => navigate("/marketplace")}>Marketplace</Button>
+      <Button onClick={() => navigate("/services")}>Services</Button>
+      <Button onClick={() => navigate("/vendor-register")}>Register</Button>
 
-        <Box sx={{ marginLeft: "auto" }}>
-          <Button color="inherit" onClick={() => navigate("/")}>Home</Button>
-          <Button color="inherit" onClick={() => navigate("/marketplace")}>Marketplace</Button>
-          <Button color="inherit" onClick={() => navigate("/services")}>Services</Button>
-          <Button color="inherit" onClick={() => navigate("/vendor-register")}>Register</Button>
-        </Box>
-      </Toolbar>
-    </AppBar>
-  );
-};
+      <Button
+        variant="contained"
+        sx={{
+          background: "#5B6E3A",
+          borderRadius: "20px",
+          px: 3
+        }}
+      >
+        Learn More
+      </Button>
+    </Box>
 
-export default Navbar;
+  </Toolbar>
+</AppBar>
