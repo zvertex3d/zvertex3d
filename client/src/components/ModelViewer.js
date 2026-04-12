@@ -10,23 +10,16 @@ const Model = ({ url }) => {
 const ModelViewer = ({ fileUrl }) => {
   if (!fileUrl) return null;
 
-  // ✅ detect file type safely
   const is3D =
-    typeof fileUrl === "string" &&
-    (fileUrl.toLowerCase().endsWith(".glb") ||
-     fileUrl.toLowerCase().endsWith(".gltf"));
+    fileUrl.toLowerCase().endsWith(".glb") ||
+    fileUrl.toLowerCase().endsWith(".gltf");
 
-  // ✅ fallback for images or unsupported files
   if (!is3D) {
     return (
       <img
         src={fileUrl}
         alt="preview"
-        style={{
-          maxWidth: "300px",
-          borderRadius: "12px",
-          marginTop: "10px"
-        }}
+        style={{ maxWidth: "300px", borderRadius: "10px" }}
       />
     );
   }
@@ -41,7 +34,8 @@ const ModelViewer = ({ fileUrl }) => {
         </Stage>
       </Suspense>
 
-      <OrbitControls autoRotate />
+      {/* 360 CONTROL */}
+      <OrbitControls enableZoom autoRotate />
     </Canvas>
   );
 };

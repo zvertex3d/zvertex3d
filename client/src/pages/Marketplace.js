@@ -1,51 +1,34 @@
-import {
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { getVendors } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { Grid, Card, CardContent } from "@mui/material";
 
 const Marketplace = () => {
   const [vendors, setVendors] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    getVendors().then(res => setVendors(res.data));
+    getVendors().then(res => {
+      if (Array.isArray(res.data)) {
+        setVendors(res.data);
+      } else {
+        setVendors([]);
+      }
+    });
   }, []);
 
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h3" sx={{ mt: 8, mb: 4 }}>
-        Marketplace
-      </Typography>
-
-      <Grid container spacing={3}>
-        {vendors.map((v) => (
-          <Grid item xs={12} md={3} key={v._id}>
-            <Card onClick={() => navigate(`/store/${v._id}`)} sx={{ cursor:"pointer" }}>
-              
-              <CardMedia
-                component="img"
-                height="160"
-                image={v.photo}
-              />
-
-              <CardContent>
-                <Typography variant="h6">{v.name}</Typography>
-                <Typography>{v.address}</Typography>
-                <Typography color="primary">{v.code}</Typography>
-              </CardContent>
-
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <Grid container spacing={2} sx={{ p: 3 }}>
+      {vendors.map(v => (
+        <Grid item xs={12} md={3} key={v._id}>
+          <Card>
+            <img
+              src={v.photo || "/images/vendor.jpg"}
+              style={{ width: "100%", height: 200, objectFit: "cover" }}
+            />
+            <CardContent>{v.name}</CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 

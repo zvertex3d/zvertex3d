@@ -8,6 +8,14 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+transporter.verify((error) => {
+  if (error) {
+    console.error("Mail server error:", error);
+  } else {
+    console.log("Mail server ready");
+  }
+});
+
 const sendMail = async (to, subject, text) => {
   try {
     await transporter.sendMail({
@@ -26,11 +34,10 @@ const sendAdminMail = async (subject, text) => {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: "zvertex3dprinting@gmail.com",
+      to: process.env.EMAIL_USER,
       subject,
       text
     });
-    console.log("Admin mail sent");
   } catch (err) {
     console.error(err);
   }

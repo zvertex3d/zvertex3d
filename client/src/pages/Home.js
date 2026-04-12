@@ -3,131 +3,87 @@ import {
   Typography,
   Box,
   Button,
-  TextField,
-  MenuItem,
   Grid,
   Card,
   CardContent
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import ModelViewer from "../components/ModelViewer";
+import { getVendors } from "../services/api";
 
 const showcase = [
-  { title: "Drone Frame", price: 1200, desc: "Lightweight carbon build", img: "https://via.placeholder.com/200" },
-  { title: "Medical Model", price: 900, desc: "High precision anatomy", img: "https://via.placeholder.com/200" },
-  { title: "Prototype Gear", price: 700, desc: "Durable ABS gear", img: "https://via.placeholder.com/200" },
-  { title: "Custom Part", price: 500, desc: "PLA rapid print", img: "https://via.placeholder.com/200" }
+  { title: "Drone Frame", price: 1200, img: "/images/drone.jpg" },
+  { title: "Medical Model", price: 900, img: "/images/medical.jpg" },
+  { title: "Gear", price: 700, img: "/images/gear.jpg" },
+  { title: "Custom Part", price: 500, img: "/images/custom.jpg" }
 ];
 
 const Home = () => {
   const [file, setFile] = useState(null);
-  const [price, setPrice] = useState(0);
-
-  const [form, setForm] = useState({
-    size: "",
-    material: "",
-    delivery: "",
-    color: ""
-  });
-
-  const handleUpload = (e) => {
-    const fileObj = e.target.files[0];
-    if (!fileObj) return;
-    setFile(URL.createObjectURL(fileObj));
-  };
-
-  const calculatePrice = () => {
-    let base = 200;
-
-    // size
-    base += Number(form.size || 0) * 40;
-
-    // material hierarchy
-    if (form.material === "PLA") base += 100;
-    if (form.material === "PETG") base += 200;
-    if (form.material === "ABS") base += 300;
-    if (form.material === "Carbon Fiber") base += 500;
-
-    // delivery (less time = more cost)
-    if (form.delivery === 2) base += 400;
-    if (form.delivery === 4) base += 200;
-    if (form.delivery === 6) base += 100;
-
-    setPrice(base);
-  };
+  const [vendors, setVendors] = useState([]);
 
   useEffect(() => {
-    if (form.size && form.material && form.delivery) {
-      calculatePrice();
-    }
-  }, [form]);
+    getVendors().then(res => {
+      if (Array.isArray(res.data)) {
+        setVendors(res.data.slice(0, 4));
+      }
+    });
+  }, []);
+
+  const handleUpload = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setFile(URL.createObjectURL(f));
+  };
 
   return (
     <Container maxWidth="lg">
 
-      {/* HERO */}
-      <Box sx={{ textAlign: "center", mt: 8, mb: 6 }}>
+      <Box sx={{ textAlign: "center", mt: 8 }}>
         <Typography variant="h1">3D Print everything.</Typography>
 
-        <Typography variant="h5" color="text.secondary" sx={{ mb: 3 }}>
-          All 3D Printing solutions under one platform
-        </Typography>
-
-        <Box sx={{ maxWidth: 500, margin: "auto" }}>
-
-          <Button variant="contained" component="label" fullWidth sx={{ mb: 2 }}>
-            Upload Photo to Get Price Quote
-            <input hidden type="file" onChange={handleUpload} />
-          </Button>
-
-          <TextField fullWidth select label="Size (inches)" sx={{ mb: 2 }}
-            onChange={(e)=>setForm({...form,size:e.target.value})}>
-            {[2,4,6,8,10].map(v => <MenuItem key={v} value={v}>{v}</MenuItem>)}
-          </TextField>
-
-          <TextField fullWidth select label="Material" sx={{ mb: 2 }}
-            onChange={(e)=>setForm({...form,material:e.target.value})}>
-            {["PLA","PETG","ABS","Carbon Fiber"].map(v => <MenuItem key={v} value={v}>{v}</MenuItem>)}
-          </TextField>
-
-          <TextField fullWidth select label="Delivery Time" sx={{ mb: 2 }}
-            onChange={(e)=>setForm({...form,delivery:e.target.value})}>
-            {[2,4,6].map(v => <MenuItem key={v} value={v}>{v} Days</MenuItem>)}
-          </TextField>
-
-          <TextField fullWidth select label="Color" sx={{ mb: 2 }}
-            onChange={(e)=>setForm({...form,color:e.target.value})}>
-            {["Red","Blue","Black","White","Custom"].map(v => <MenuItem key={v}>{v}</MenuItem>)}
-          </TextField>
-
-        </Box>
+        <Button variant="contained" component="label" sx={{ mt: 2 }}>
+          Upload File (3D Supported)
+          <input hidden type="file" onChange={handleUpload} />
+        </Button>
       </Box>
 
-      {/* PREVIEW */}
       {file && (
-        <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Box sx={{ textAlign: "center", mt: 4 }}>
+          <Typography variant="h5">Preview (360°)</Typography>
           <ModelViewer fileUrl={file} />
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            Approx Price: ₹{price}
-          </Typography>
-          <Button variant="contained" href="/order" sx={{ mt: 2 }}>
-            Proceed to Order
-          </Button>
         </Box>
       )}
 
-      {/* SHOWCASE GRID */}
-      <Typography variant="h4" sx={{ mb: 3 }}>Our Works</Typography>
+      {/* VENDORS */}
+      <Typography variant="h4" sx={{ mt: 6 }}>Latest Vendors</Typography>
+      <Grid container spacing={2}>
+        {vendors.map(v => (
+          <Grid item xs={12} md={3} key={v._id}>
+            <Card>
+              <img
+                src={v.photo || "/images/vendor.jpg"}
+                style={{ width: "100%", height: 200, objectFit: "cover" }}
+              />
+              <CardContent>{v.name}</CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-      <Grid container spacing={3}>
+      {/* SHOWCASE */}
+      <Typography variant="h4" sx={{ mt: 6 }}>Our Works</Typography>
+      <Grid container spacing={2}>
         {showcase.map((s, i) => (
           <Grid item xs={12} md={3} key={i}>
             <Card>
-              <img src={s.img} alt="" style={{ width: "100%" }} />
+              <img
+                src={s.img}
+                onError={(e) => (e.target.src = "/images/placeholder.jpg")}
+                style={{ width: "100%", height: 200, objectFit: "cover" }}
+              />
               <CardContent>
-                <Typography variant="h6">{s.title}</Typography>
-                <Typography>{s.desc}</Typography>
-                <Typography color="primary">₹{s.price}</Typography>
+                {s.title} - ₹{s.price}
               </CardContent>
             </Card>
           </Grid>
