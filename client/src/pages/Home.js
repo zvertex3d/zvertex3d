@@ -21,18 +21,21 @@ const Home = () => {
 
   const handleUpload = (e) => {
     const fileObj = e.target.files[0];
-    setFile(URL.createObjectURL(fileObj));
+    if (!fileObj) return;
+
+    const url = URL.createObjectURL(fileObj);
+    setFile(url);
   };
 
   const calculatePrice = () => {
     let base = 200;
 
-    base += Number(form.size) * 50;
+    base += Number(form.size || 0) * 50;
 
     if (form.material === "ABS") base += 200;
     if (form.material === "Carbon Fiber") base += 500;
 
-    base += Number(form.delivery) * 20;
+    base += Number(form.delivery || 0) * 20;
 
     setPrice(base);
   };
