@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { getVendors } from "../services/api";
-import { Grid, Card, CardContent } from "@mui/material";
+import { Grid, Card, CardContent, Typography } from "@mui/material";
 
 const Marketplace = () => {
   const [vendors, setVendors] = useState([]);
 
   useEffect(() => {
-    getVendors().then(res => {
-      if (Array.isArray(res.data)) {
-        setVendors(res.data);
-      } else {
-        setVendors([]);
-      }
-    });
+    getVendors()
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setVendors(res.data);
+        } else {
+          setVendors([]);
+        }
+      })
+      .catch(() => setVendors([]));
   }, []);
 
   return (
@@ -22,9 +24,21 @@ const Marketplace = () => {
           <Card>
             <img
               src={v.photo || "/images/vendor.jpg"}
-              style={{ width: "100%", height: 200, objectFit: "cover" }}
+              onError={(e) =>
+                (e.target.src = "/images/placeholder.jpg")
+              }
+              style={{
+                width: "100%",
+                height: 200,
+                objectFit: "cover"
+              }}
             />
-            <CardContent>{v.name}</CardContent>
+            <CardContent>
+              <Typography variant="h6">{v.name}</Typography>
+              <Typography variant="body2">
+                {v.address}
+              </Typography>
+            </CardContent>
           </Card>
         </Grid>
       ))}

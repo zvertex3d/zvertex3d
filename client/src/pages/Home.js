@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import ModelViewer from "../components/ModelViewer";
-import { getVendors } from "../services/api";
+import { getVendors, placeOrder } from "../services/api";
 
 const showcase = [
   { title: "Drone Frame", price: 1200, img: "/images/drone.jpg" },
@@ -24,19 +24,24 @@ const Home = () => {
   const [file, setFile] = useState(null);
   const [price, setPrice] = useState(0);
   const [vendors, setVendors] = useState([]);
+  const [selectedVendor, setSelectedVendor] = useState("");
 
   const [form, setForm] = useState({
     size: "",
     material: "",
-    delivery: ""
+    delivery: "",
+    email: "",
+    phone: ""
   });
 
   useEffect(() => {
-    getVendors().then(res => {
-      if (Array.isArray(res.data)) {
-        setVendors(res.data.slice(0, 4));
-      }
-    });
+    getVendors()
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setVendors(res.data);
+        }
+      })
+      .catch(() => setVendors([]));
   }, []);
 
   const handleUpload = (e) => {
@@ -68,6 +73,18 @@ const Home = () => {
     }
   }, [form]);
 
+  const handleOrder = async () => {
+    try {
+      await placeOrder({
+        ...form,
+        vendorId: selectedVendor
+      });
+      alert("Order placed successfully!");
+    } catch (err) {
+      alert("Order failed. Check backend.");
+    }
+  };
+
   return (
     <Container maxWidth="lg">
 
@@ -81,32 +98,30 @@ const Home = () => {
         </Button>
       </Box>
 
-      {/* PREVIEW + PRICE */}
+      {/* PREVIEW */}
       {file && (
         <Box sx={{ textAlign: "center", mt: 4 }}>
           <Typography variant="h5">Preview (360°)</Typography>
-
           <ModelViewer fileUrl={file} />
 
+          {/* FORM */}
           <Box sx={{ mt: 3 }}>
             <TextField
               label="Size"
               type="number"
-              value={form.size}
+              sx={{ m: 1 }}
               onChange={(e) =>
                 setForm({ ...form, size: e.target.value })
               }
-              sx={{ m: 1 }}
             />
 
             <TextField
               select
               label="Material"
-              value={form.material}
+              sx={{ m: 1 }}
               onChange={(e) =>
                 setForm({ ...form, material: e.target.value })
               }
-              sx={{ m: 1 }}
             >
               <MenuItem value="PLA">PLA</MenuItem>
               <MenuItem value="PETG">PETG</MenuItem>
@@ -116,26 +131,63 @@ const Home = () => {
 
             <TextField
               select
-              label="Delivery Days"
-              value={form.delivery}
+              label="Delivery"
+              sx={{ m: 1 }}
               onChange={(e) =>
                 setForm({ ...form, delivery: e.target.value })
               }
-              sx={{ m: 1 }}
             >
               <MenuItem value={2}>2 Days</MenuItem>
               <MenuItem value={4}>4 Days</MenuItem>
               <MenuItem value={6}>6 Days</MenuItem>
+            </TextField>
+
+            <TextField
+              label="Email"
+              sx={{ m: 1 }}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
+            />
+
+            <TextField
+              label="Phone"
+              sx={{ m: 1 }}
+              onChange={(e) =>
+                setForm({ ...form, phone: e.target.value })
+              }
+            />
+
+            {/* VENDOR SELECT */}
+            <TextField
+              select
+              label="Select Vendor"
+              sx={{ m: 1, minWidth: 200 }}
+              onChange={(e) => setSelectedVendor(e.target.value)}
+            >
+              {vendors.map(v => (
+                <MenuItem key={v._id} value={v._id}>
+                  {v.name}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
 
           <Typography variant="h5" sx={{ mt: 2 }}>
             ₹{price}
           </Typography>
+
+          <Button
+            variant="contained"
+            sx={{ mt: 3 }}
+            onClick={handleOrder}
+          >
+            Proceed to Place Order
+          </Button>
         </Box>
       )}
 
-      {/* LATEST VENDORS */}
+      {/* VENDORS */}
       <Typography variant="h4" sx={{ mt: 6 }}>
         Latest Vendors
       </Typography>
