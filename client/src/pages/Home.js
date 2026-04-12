@@ -1,29 +1,51 @@
 import {
   Container,
   Typography,
-  Grid,
-  Card,
-  CardContent,
   Box,
   Button,
   TextField,
   MenuItem
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import ModelViewer from "../components/ModelViewer";
 
 const Home = () => {
   const [file, setFile] = useState(null);
-  const [price, setPrice] = useState(null);
+  const [price, setPrice] = useState(0);
+
+  const [form, setForm] = useState({
+    size: "",
+    material: "",
+    delivery: ""
+  });
 
   const handleUpload = (e) => {
-    setFile(URL.createObjectURL(e.target.files[0]));
-    setPrice(Math.floor(Math.random() * 2000) + 500);
+    const fileObj = e.target.files[0];
+    setFile(URL.createObjectURL(fileObj));
   };
+
+  const calculatePrice = () => {
+    let base = 200;
+
+    base += Number(form.size) * 50;
+
+    if (form.material === "ABS") base += 200;
+    if (form.material === "Carbon Fiber") base += 500;
+
+    base += Number(form.delivery) * 20;
+
+    setPrice(base);
+  };
+
+  useEffect(() => {
+    if (form.size && form.material && form.delivery) {
+      calculatePrice();
+    }
+  }, [form]);
 
   return (
     <Container maxWidth="lg">
 
-      {/* HERO */}
       <Box sx={{ textAlign: "center", mt: 8, mb: 6 }}>
         <Typography variant="h1">Browse everything.</Typography>
 
@@ -31,37 +53,56 @@ const Home = () => {
           All 3D Printing solutions under one platform
         </Typography>
 
-        {/* UPLOAD SECTION */}
         <Box sx={{ maxWidth: 500, margin: "auto" }}>
 
           <Button variant="contained" component="label" fullWidth sx={{ mb: 2 }}>
-            Upload Model Image
+            Upload Model File
             <input hidden type="file" onChange={handleUpload} />
           </Button>
 
-          <TextField fullWidth select label="Size (inches)" sx={{ mb: 2 }}>
-            {[2,4,6,8,10].map(v => <MenuItem key={v}>{v}</MenuItem>)}
+          <TextField
+            fullWidth
+            select
+            label="Size (inches)"
+            sx={{ mb: 2 }}
+            onChange={(e) => setForm({ ...form, size: e.target.value })}
+          >
+            {[2,4,6,8].map(v => (
+              <MenuItem key={v} value={v}>{v}</MenuItem>
+            ))}
           </TextField>
 
-          <TextField fullWidth select label="Color" sx={{ mb: 2 }}>
-            {["Red","Blue","Black","White"].map(v => <MenuItem key={v}>{v}</MenuItem>)}
+          <TextField
+            fullWidth
+            select
+            label="Material"
+            sx={{ mb: 2 }}
+            onChange={(e) => setForm({ ...form, material: e.target.value })}
+          >
+            {["PLA","PETG","ABS","Carbon Fiber"].map(v => (
+              <MenuItem key={v} value={v}>{v}</MenuItem>
+            ))}
           </TextField>
 
-          <TextField fullWidth select label="Material" sx={{ mb: 2 }}>
-            {["PLA","PETG","ABS","Carbon Fiber","Other"].map(v => <MenuItem key={v}>{v}</MenuItem>)}
-          </TextField>
-
-          <TextField fullWidth select label="Delivery Time (Days)" sx={{ mb: 2 }}>
-            {[2,4,6,8].map(v => <MenuItem key={v}>{v}</MenuItem>)}
+          <TextField
+            fullWidth
+            select
+            label="Delivery Time"
+            sx={{ mb: 2 }}
+            onChange={(e) => setForm({ ...form, delivery: e.target.value })}
+          >
+            {[2,4,6].map(v => (
+              <MenuItem key={v} value={v}>{v} Days</MenuItem>
+            ))}
           </TextField>
 
         </Box>
       </Box>
 
-      {/* PREVIEW */}
       {file && (
         <Box sx={{ textAlign: "center", mb: 6 }}>
-          <img src={file} alt="preview" style={{ maxWidth: "300px" }} />
+
+          <ModelViewer fileUrl={file} />
 
           <Typography variant="h5" sx={{ mt: 2 }}>
             Approx Price: ₹{price}
@@ -70,6 +111,7 @@ const Home = () => {
           <Button variant="contained" href="/order" sx={{ mt: 2 }}>
             Proceed to Order
           </Button>
+
         </Box>
       )}
 
