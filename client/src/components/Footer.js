@@ -1,36 +1,47 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 
 const Footer = () => {
   return (
     <Box
-  sx={{
-    mt: 10,
-    p: 5,
-    background: "#eef1e8",
-    textAlign: "center"
-  }}
->
-      
-      <Typography variant="h6">About</Typography>
-      <Typography variant="body2">
-        Zvertex provides complete 3D printing solutions across industries.
-      </Typography>
+      sx={{
+        mt: 10,
+        p: 5,
+        background: "#eef1e8"
+      }}
+    >
+      <Grid container spacing={4}>
 
-      <Typography variant="h6" sx={{ mt: 2 }}>Contact</Typography>
-      <Typography variant="body2">
-        Email: zvertex3d@gmail.com | Phone: +91-XXXXXXXXXX
-      </Typography>
+        {/* ABOUT */}
+        <Grid item xs={12} md={4}>
+          <Typography variant="h6">About</Typography>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            Manufacturing & Innovation Advanced 3D Printing | Product Development | Automation Driven by technology. Built to scale.
+          </Typography>
+        </Grid>
 
-      <Typography variant="h6" sx={{ mt: 2 }}>Location</Typography>
+        {/* CONTACT */}
+        <Grid item xs={12} md={4}>
+          <Typography variant="h6">Contact</Typography>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            zvertex3d@gmail.com <br />
+            +91 8639684322
+          </Typography>
+        </Grid>
 
-      <iframe
-        title="map"
-        src="https://www.google.com/maps?q=Hayathnagar,Hyderabad&output=embed"
-        width="100%"
-        height="200"
-        style={{ border: 0, marginTop: "10px" }}
-      />
+        {/* MAP */}
+        <Grid item xs={12} md={4}>
+          <Typography variant="h6">Location</Typography>
 
+          <iframe
+            title="map"
+            src="https://www.google.com/maps?q=Hayathnagar,Hyderabad&output=embed"
+            width="100%"
+            height="200"
+            style={{ border: 0, marginTop: "10px" }}
+          />
+        </Grid>
+
+      </Grid>
     </Box>
   );
 };
